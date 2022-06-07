@@ -1,5 +1,5 @@
 {
-    "name": "typescript-adobe-boilerplate",
+    "name": "typescript-extendscript-mysql-boilerplate",
     "version": "1.0.0",
     "description": "Scripting boilerplate for the Adobe applications.",
     "main": "index.js",
