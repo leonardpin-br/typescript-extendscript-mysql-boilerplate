@@ -1,0 +1,31 @@
+{
+    "env": {
+        "es2021": true
+    },
+    "extends": [
+        "airbnb-base",
+        "prettier"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": "latest"
+    },
+    "plugins": [
+        "@typescript-eslint"
+    ],
+    "rules": {
+        "spaced-comment": [
+            "error",
+            "always",
+            {
+                "markers": [
+                    "DESCRIPTION:",
+                    "@include",
+                    "/"
+                ]
+            }
+        ],
+        "no-unused-vars": "warn"
+    },
+    "ignorePatterns": ["dist/**/*.jsx"]
+}

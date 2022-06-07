@@ -1,0 +1,32 @@
+{
+    "name": "typescript-adobe-boilerplate",
+    "version": "1.0.0",
+    "description": "Scripting boilerplate for the Adobe applications.",
+    "main": "index.js",
+    "keywords": [],
+    "author": "Leonardo Pinheiro",
+    "license": "ISC",
+    "dependencies": {
+        "extendscript-es5-shim": "^0.3.1",
+        "extendscript-es6-shim": "^0.2.0",
+        "json2": "^0.4.0",
+        "mysql": "^2.18.1",
+        "types-for-adobe": "^7.0.0"
+    },
+    "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^5.17.0",
+        "@typescript-eslint/parser": "^5.17.0",
+        "eslint": "^8.12.0",
+        "eslint-config-airbnb-base": "^15.0.0",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-plugin-import": "^2.25.4",
+        "typescript": "^4.6.4"
+    },
+    "scripts": {
+        "watch:src": "tsc --watch",
+        "build:doc": "jsdoc -c jsdoc.json",
+        "watch:doc": "nodemon --ext js,jsdoc,jsx --watch dist --exec \"npm run build:doc\"",
+        "server:doc": "live-server ./docs --no-css-inject --port=8282",
+        "server:net": "node ./config/net-server.js"
+    }
+}
