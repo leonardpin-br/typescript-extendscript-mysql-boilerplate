@@ -1,6 +1,6 @@
 //DESCRIPTION: Entry point of the application. This is the file to be executed.
 /**
- * Modified 2022-05-28
+ * Modified 2022-06-07
  * @file		Entry point of the application. This is the file to be executed.
  * @author		Leonardo Pinheiro, UERJ <info@leonardopinheiro.net>
  * @copyright	Leonardo Pinheiro 2022

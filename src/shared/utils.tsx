@@ -1,6 +1,6 @@
 //DESCRIPTION: File (not module) with useful functions.
 /**
- * Modified 2022-06-02
+ * Modified 2022-06-07
  * @file		File (not module) with useful functions shared by <br />
  * 				other scripts in the application project.
  * @copyright	Leonardo Pinheiro 2021
