@@ -47,7 +47,7 @@ function dbConnect() {
     Bicycle.setDatabase(database);
 
 
-    const myBike = new Bicycle();
+    // const myBike = new Bicycle();
 
     // myBike.brand = 'Schwinn';
     // myBike.model = 'Cutter';
@@ -71,21 +71,45 @@ function dbConnect() {
     // myBike.condition_id = 2;
     // myBike.description = '';
 
-    myBike.brand = 'Diamondback';
-    myBike.model = "Bob's Overdrive";
-    myBike.year = 2016;
-    myBike.category = 'Mountain';
-    myBike.color = 'dark green';
-    myBike.gender = 'Unisex';
-    myBike.price = 565;
-    myBike.weight_kg = 23.7;
-    myBike.condition_id = 3;
-    myBike.description = '';
+    // myBike.brand = 'Diamondback';
+    // myBike.model = "Bob's Overdrive";
+    // myBike.year = 2016;
+    // myBike.category = 'Mountain';
+    // myBike.color = 'dark green';
+    // myBike.gender = 'Unisex';
+    // myBike.price = 565;
+    // myBike.weight_kg = 23.7;
+    // myBike.condition_id = 3;
+    // myBike.description = '';
 
-    const result = myBike.create();
+    // const result = myBike.create();
+    // $.writeln(`The ID: ${myBike.id}`);
+    // $.writeln(`result.affectedRows: ${result.affectedRows}`);
+    // -------------------------------------------------------------------------
 
-    $.writeln(`The ID: ${myBike.id}`);
-    $.writeln(`result.affectedRows: ${result.affectedRows}`);
+    const bicycle = Bicycle.findById(3);
+
+    /*  args needs to be a generic object to work as an associative array.
+        It is acting here as a form that receives the values that came from
+        the database (findById). */
+    const args = {
+        brand: null,
+        model: bicycle.model,
+        year: bicycle.year,
+        category: bicycle.category,
+        color: bicycle.color,
+        gender: bicycle.gender,
+        price: bicycle.price,
+        weight_kg: bicycle.weight_kg,
+        condition_id: bicycle.condition_id,
+        description: bicycle.description
+    };
+
+    bicycle.mergeAttributes(args);
+    $.writeln(bicycle.brand);
+    $.writeln(bicycle.model);
+    // bicycle.update();
+
 
 
 

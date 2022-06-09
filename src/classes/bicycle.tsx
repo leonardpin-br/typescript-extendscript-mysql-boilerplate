@@ -227,12 +227,34 @@ class Bicycle {
         return result;
     }
 
-    public update() {
+    public update() {}
 
-    }
+    /**
+     * Merges the attributes from the generic object (that is acting like an
+     * associative array) into the object in memory created from the
+     * findById() method.
+     *
+     * @param {object} args The object (that is acting like an associative
+     *                      array) containing the new values to be merged
+     *                      and later updated.
+     * @memberof Bicycle
+     */
+    public mergeAttributes(args: object): void {
+        /*  Object.keys() only works because of the 'shim' inclusions at the
+            top of the file. ExtendScript does not know about that.
 
-    public mergeAttributes(args) {
+            The return value of Object.keys() is an indexed array. */
+        /// @ts-ignore: Property 'keys' does not exist on type 'ObjectConstructor'
+        const keys = Object.keys(args);
 
+        let value;
+        keys.forEach((key) => {
+            value = args[key];
+
+            if (this.hasOwnProperty(key) && value !== null) {
+                this[key] = value;
+            }
+        });
     }
 
     /**
