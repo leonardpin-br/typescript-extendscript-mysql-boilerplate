@@ -37,7 +37,7 @@ class Connection {
      *
      * @param {string} sql The SQL query as a string to be executed.
      * @return {(false | object | object[])}    {(false | object | object[])} The return value will be:
-     *                                          An object if there is a record being created or updated.
+     *                                          An object if there is a record being created, updated or deleted.
      *                                          An object array with the result if it is a selection.
      *                                          False if there is no answer.
      * @memberof Connection
@@ -50,6 +50,9 @@ class Connection {
      * @example
      * // MySQL answer (JSON) when updating a record:
      * {"fieldCount":0,"affectedRows":1,"insertId":0,"serverStatus":2,"warningCount":0,"message":"(Rows matched: 1  Changed: 1  Warnings: 0","protocol41":true,"changedRows":1}
+     * @example
+     * // MySQL answer (JSON) when deleting a record:
+     * {"fieldCount":0,"affectedRows":1,"insertId":0,"serverStatus":2,"warningCount":0,"message":"","protocol41":true,"changedRows":0}
      */
     public query(sql: string) {
         this.connectionData.sql = sql;

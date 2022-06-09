@@ -400,6 +400,32 @@ class Bicycle {
         return sanitized;
     }
 
+    /**
+     * Deletes, in the database, the record that corresponds to the current
+     * instance object in memory.
+     * After deleting, the instance of the object will still
+     * exist, even though the database record does not.
+     * This can be useful, as in:
+     * $.writeln(`${user.firstName} was deleted.`);
+     * but, for example, we can't call user.update() after
+     * calling user.delete().
+     *
+     * @return {(false | object)}   {(false | object)} The return value will be:
+     *                              An object with information provided by MySQL.
+     *                              False if there is no answer.
+     * @memberof Bicycle
+     */
+    public delete() {
+        this.database = Bicycle.database;
+
+        let sql = 'DELETE FROM bicycles ';
+        sql += `WHERE id='${this.database.escapeString(String(this.id))}' `;
+        sql += 'LIMIT 1';
+
+        const result = this.database.query(sql);
+        return result;
+    }
+
     // ----- END OF ACTIVE RECORD CODE -----
 
     public id: number;

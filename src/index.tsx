@@ -60,26 +60,57 @@ function dbConnect() {
     // myBike.condition_id = 3;
     // myBike.description = '';
 
+    // -------------------------------------------------------------------------
     // EDIT
 
-    myBike = Bicycle.findById(7);
+    // const myBike = Bicycle.findById(7);
 
-    myBike.brand = 'Schwinn';
-    myBike.model = '';
-    myBike.year = 2016;
-    myBike.category = 'Cruiser';
-    myBike.color = 'purple';
-    myBike.gender = 'Womens';
-    myBike.price = 190;
-    myBike.weight_kg = 19.5;
-    myBike.condition_id = 3;
-    myBike.description = '';
+    // myBike.brand = 'Schwinn';
+    // myBike.model = '';
+    // myBike.year = 2016;
+    // myBike.category = 'Cruiser';
+    // myBike.color = 'purple';
+    // myBike.gender = 'Womens';
+    // myBike.price = 190;
+    // myBike.weight_kg = 19.5;
+    // myBike.condition_id = 3;
+    // myBike.description = '';
 
-    myBike.save();
+    // myBike.save();
 
-    for (let i = 0; i < myBike.errors.length; i += 1) {
-        $.writeln(myBike.errors[i]);
+    // for (let i = 0; i < myBike.errors.length; i += 1) {
+    //     $.writeln(myBike.errors[i]);
+    // }
+
+    // -------------------------------------------------------------------------
+    // DELETE
+
+    // const myBike = new Bicycle();
+
+    // myBike.brand = 'Junk Bike';
+    // myBike.model = 'Delete me';
+    // myBike.year = 1998;
+    // myBike.category = 'Road';
+    // myBike.color = 'white';
+    // myBike.gender = 'Mens';
+    // myBike.price = 2;
+    // myBike.weight_kg = 1;
+    // myBike.condition_id = 3;
+    // myBike.description = '';
+
+    // myBike.save();
+
+
+    const myBike = Bicycle.findById(18);
+
+    const result = myBike.delete();
+
+    if (result) {
+        $.writeln('The bicycle was deleted successfully.');
     }
+
+
+    // -------------------------------------------------------------------------
 
     // myBike.brand = 'Schwinn';
     // myBike.model = 'Cutter';
