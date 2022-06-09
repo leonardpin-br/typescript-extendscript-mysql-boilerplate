@@ -1,5 +1,5 @@
 /**
- * Modified 2022-06-01
+ * Modified 2022-06-09
  * @file		Entry point of the application. This is the file to be executed.
  * @author		Leonardo Pinheiro, UERJ <info@leonardopinheiro.net>
  * @copyright	Leonardo Pinheiro 2022
@@ -75,9 +75,10 @@ class Bicycle {
      */
     public static findBySql(sql: string): object[] {
         /**
-         * @type {object[]} An array containing objects. Each object represents
-         *                  a row in the result set. Every key represents a
-         *                  column in the table (result set).
+         * @type {(false | object | object[])}  {(false | object | object[])} If the query() is successful,
+         *                                      it will be an array containing objects.
+         *                                      Each object represents a row in the result set. Every key
+         *                                      represents a column in the table (result set).
          */
         /// @ts-ignore: Cannot find name 'JSON'
         const result: object[] = this.database.query(sql);
@@ -157,7 +158,17 @@ class Bicycle {
         return obj;
     }
 
-    public create() {
+    /**
+     * Creates a record in the database with the properties' values of the
+     * current instance in memory.
+     *
+     * @protected
+     * @return {(false | object | object[])}    {(false | object | object[])} The
+     *                                          result of the query() method executed
+     *                                          inside this method.
+     * @memberof Bicycle
+     */
+    protected create() {
         this.database = Bicycle.database;
 
         const attributes = this.sanitizedAttributes();
@@ -227,7 +238,17 @@ class Bicycle {
         return result;
     }
 
-    public update() {
+    /**
+     * Updates the database with the properties' values of the current
+     * instance in memory.
+     *
+     * @protected
+     * @return {(false | object | object[])}    {(false | object | object[])} The
+     *                                          result of the query() method executed
+     *                                          inside this method.
+     * @memberof Bicycle
+     */
+    protected update() {
         this.database = Bicycle.database;
 
         const attributes = this.sanitizedAttributes();
@@ -248,6 +269,21 @@ class Bicycle {
 
         const result = this.database.query(sql);
         return result;
+    }
+
+    /**
+     * Executes the update() or the create() instance methods based on the
+     * presence of an ID.
+     *
+     * @return {*} An instance method (update() or create()).
+     * @memberof Bicycle
+     */
+    public save() {
+        // A new record will not have an ID yet
+        if (this.id) {
+            return this.update();
+        }
+        return this.create();
     }
 
     /**

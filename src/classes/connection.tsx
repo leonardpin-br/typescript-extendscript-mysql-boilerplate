@@ -40,8 +40,15 @@ class Connection {
      *                                          being created. An object array with the result if it is a selection.
      *                                          False if there is no answer.
      * @memberof Connection
-     * @example MySQL answer (JSON) when creating a record:
-     *          {"fieldCount":0,"affectedRows":1,"insertId":7,"serverStatus":2,"warningCount":0,"message":"","protocol41":true,"changedRows":0}
+     * @example
+     * // MySQL answer (JSON) when creating a record:
+     * {"fieldCount":0,"affectedRows":1,"insertId":7,"serverStatus":2,"warningCount":0,"message":"","protocol41":true,"changedRows":0}
+     * @example
+     * // MySQL answer (JSON) when selecting:
+     * [{"id":3,"brand":"Diamondback","model":"Bob's Overdrive","year":2016,"category":"Mountain","gender":"Unisex","color":"dark green","price":565,"weight_kg":23.7,"condition_id":3,"description":""}]
+     * @example
+     * // MySQL answer (JSON) when updating a record:
+     * {"fieldCount":0,"affectedRows":1,"insertId":0,"serverStatus":2,"warningCount":0,"message":"(Rows matched: 1  Changed: 1  Warnings: 0","protocol41":true,"changedRows":1}
      */
     public query(sql: string) {
         this.connectionData.sql = sql;

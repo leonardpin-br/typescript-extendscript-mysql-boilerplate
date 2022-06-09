@@ -82,38 +82,36 @@ function dbConnect() {
     // myBike.condition_id = 3;
     // myBike.description = '';
 
-    // const result = myBike.create();
+    // const firstResult = myBike.save();
     // $.writeln(`The ID: ${myBike.id}`);
-    // $.writeln(`result.affectedRows: ${result.affectedRows}`);
+    // $.writeln(`result.affectedRows: ${firstResult.affectedRows}`);
     // -------------------------------------------------------------------------
 
     const bicycle = Bicycle.findById(3);
 
-    /*  args needs to be a generic object to work as an associative array.
-        It is acting here as a form that receives the values that came from
-        the database (findById). */
-    const args = {
-        brand: bicycle.brand,
-        model: "Overdrive",
-        year: bicycle.year,
-        category: bicycle.category,
-        color: bicycle.color,
-        gender: bicycle.gender,
-        price: bicycle.price,
-        weight_kg: bicycle.weight_kg,
-        condition_id: bicycle.condition_id,
-        description: bicycle.description
-    };
+    // /*  args needs to be a generic object to work as an associative array.
+    //     It is acting here as a form that receives the values that came from
+    //     the database (findById). */
+    // const args = {
+    //     brand: bicycle.brand,
+    //     model: "Bob's Overdrive",
+    //     year: bicycle.year,
+    //     category: bicycle.category,
+    //     color: bicycle.color,
+    //     gender: bicycle.gender,
+    //     price: bicycle.price,
+    //     weight_kg: bicycle.weight_kg,
+    //     condition_id: bicycle.condition_id,
+    //     description: bicycle.description
+    // };
 
-    bicycle.mergeAttributes(args);
-    // $.writeln(bicycle.brand);
-    // $.writeln(bicycle.model);
-    const result = bicycle.update();
+    // bicycle.mergeAttributes(args);
+    // const result = bicycle.save();
 
-    if (result) {
-        $.writeln("The bicycle was updated successfully.");
-    }
-
+    // if (result) {
+    //     $.writeln("The bicycle was updated successfully.");
+    // }
+// -------------------------------------------------------------------------
 
     // const bikes: object[] = Bicycle.findAll();
     // let bike;
