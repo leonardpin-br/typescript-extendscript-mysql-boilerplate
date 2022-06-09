@@ -227,6 +227,14 @@ class Bicycle {
         return result;
     }
 
+    public update() {
+
+    }
+
+    public mergeAttributes(args) {
+
+    }
+
     /**
      * Creates an object that have, as properties, the database columns
      * (excluding ID) and the corresponding values from the
