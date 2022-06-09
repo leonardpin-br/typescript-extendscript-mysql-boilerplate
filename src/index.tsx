@@ -93,8 +93,8 @@ function dbConnect() {
         It is acting here as a form that receives the values that came from
         the database (findById). */
     const args = {
-        brand: null,
-        model: bicycle.model,
+        brand: bicycle.brand,
+        model: "Overdrive",
         year: bicycle.year,
         category: bicycle.category,
         color: bicycle.color,
@@ -106,11 +106,13 @@ function dbConnect() {
     };
 
     bicycle.mergeAttributes(args);
-    $.writeln(bicycle.brand);
-    $.writeln(bicycle.model);
-    // bicycle.update();
+    // $.writeln(bicycle.brand);
+    // $.writeln(bicycle.model);
+    const result = bicycle.update();
 
-
+    if (result) {
+        $.writeln("The bicycle was updated successfully.");
+    }
 
 
     // const bikes: object[] = Bicycle.findAll();

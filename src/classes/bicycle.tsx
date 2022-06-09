@@ -111,7 +111,7 @@ class Bicycle {
     }
 
     public static findById(id: number): false | object {
-        let sql = 'SELECT * FROM bicycles ';
+        let sql: string = 'SELECT * FROM bicycles ';
         sql += `WHERE id='${id}'`;
         const objectArray = this.findBySql(sql);
         if (objectArray.length > 0) {
@@ -227,7 +227,28 @@ class Bicycle {
         return result;
     }
 
-    public update() {}
+    public update() {
+        this.database = Bicycle.database;
+
+        const attributes = this.sanitizedAttributes();
+        const attributePairs: string[] = [];
+
+        /// @ts-ignore: Property 'keys' does not exist on type 'ObjectConstructor'
+        const keys = Object.keys(attributes);
+        keys.forEach((key) => {
+            attributePairs.push(`${key}='${attributes[key]}'`);
+        });
+
+        let sql: string = 'UPDATE bicycles SET ';
+
+        sql += attributePairs.join(', ');
+
+        sql += ` WHERE id='${this.database.escapeString(String(this.id))}' `;
+        sql += 'LIMIT 1';
+
+        const result = this.database.query(sql);
+        return result;
+    }
 
     /**
      * Merges the attributes from the generic object (that is acting like an
