@@ -47,7 +47,39 @@ function dbConnect() {
     Bicycle.setDatabase(database);
 
 
-    // const myBike = new Bicycle();
+    // let myBike = new Bicycle();
+
+    // myBike.brand = 'Schwinn';
+    // myBike.model = 'Sanctuary 7-Speed';
+    // myBike.year = 2016;
+    // myBike.category = 'Cruiser';
+    // myBike.color = 'purple';
+    // myBike.gender = 'Womens';
+    // myBike.price = 190;
+    // myBike.weight_kg = 19.5;
+    // myBike.condition_id = 3;
+    // myBike.description = '';
+
+    // EDIT
+
+    myBike = Bicycle.findById(7);
+
+    myBike.brand = 'Schwinn';
+    myBike.model = '';
+    myBike.year = 2016;
+    myBike.category = 'Cruiser';
+    myBike.color = 'purple';
+    myBike.gender = 'Womens';
+    myBike.price = 190;
+    myBike.weight_kg = 19.5;
+    myBike.condition_id = 3;
+    myBike.description = '';
+
+    myBike.save();
+
+    for (let i = 0; i < myBike.errors.length; i += 1) {
+        $.writeln(myBike.errors[i]);
+    }
 
     // myBike.brand = 'Schwinn';
     // myBike.model = 'Cutter';
@@ -87,7 +119,7 @@ function dbConnect() {
     // $.writeln(`result.affectedRows: ${firstResult.affectedRows}`);
     // -------------------------------------------------------------------------
 
-    const bicycle = Bicycle.findById(3);
+    // const bicycle = Bicycle.findById(3);
 
     // /*  args needs to be a generic object to work as an associative array.
     //     It is acting here as a form that receives the values that came from

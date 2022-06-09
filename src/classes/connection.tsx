@@ -36,8 +36,9 @@ class Connection {
      *  Executes the query.
      *
      * @param {string} sql The SQL query as a string to be executed.
-     * @return {(false | object | object[])}    {(false | object | object[])} An object if there is a record
-     *                                          being created. An object array with the result if it is a selection.
+     * @return {(false | object | object[])}    {(false | object | object[])} The return value will be:
+     *                                          An object if there is a record being created or updated.
+     *                                          An object array with the result if it is a selection.
      *                                          False if there is no answer.
      * @memberof Connection
      * @example

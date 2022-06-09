@@ -53,6 +53,8 @@ class Bicycle {
 
     protected dbColumns: string[];
 
+    public errors: string[] = [];
+
     /**
      * Sets the connectionData property to be used in the connection
      * with the database.
@@ -158,6 +160,19 @@ class Bicycle {
         return obj;
     }
 
+    protected validate() {
+        this.errors = [];
+
+        if (!this.brand) {
+            this.errors.push('Brand cannot be blank.');
+        }
+        if (!this.model) {
+            this.errors.push('Model cannot be blank.');
+        }
+
+        return this.errors;
+    }
+
     /**
      * Creates a record in the database with the properties' values of the
      * current instance in memory.
@@ -170,6 +185,11 @@ class Bicycle {
      */
     protected create() {
         this.database = Bicycle.database;
+
+        this.validate();
+        if (this.errors.length > 0) {
+            return false;
+        }
 
         const attributes = this.sanitizedAttributes();
         let sql = 'INSERT INTO bicycles (';
@@ -250,6 +270,11 @@ class Bicycle {
      */
     protected update() {
         this.database = Bicycle.database;
+
+        this.validate();
+        if (this.errors.length > 0) {
+            return false;
+        }
 
         const attributes = this.sanitizedAttributes();
         const attributePairs: string[] = [];
