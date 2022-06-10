@@ -101,13 +101,13 @@ function dbConnect() {
     // myBike.save();
 
 
-    const myBike = Bicycle.findById(18);
+    // const myBike = Bicycle.findById(18);
 
-    const result = myBike.delete();
+    // const result = myBike.delete();
 
-    if (result) {
-        $.writeln('The bicycle was deleted successfully.');
-    }
+    // if (result) {
+    //     $.writeln('The bicycle was deleted successfully.');
+    // }
 
 
     // -------------------------------------------------------------------------
@@ -199,24 +199,24 @@ function dbConnect() {
 
     // $.writeln("============== findById ==============");
 
-    // const result = Bicycle.findById(2);
+    const result = Bicycle.findById(1);
 
-    // if (result !== false) {
+    if (result !== false) {
 
-    //     const bike2 = (result as Bicycle);
+        const bike2 = (result as Bicycle);
 
-    //     $.writeln(`Name: ${bike2.name()}\n`);
+        $.writeln(`Name: ${bike2.name()}\n`);
 
-    //     $.writeln(`Brand: ${bike2.brand}`);
-    //     $.writeln(`Model: ${bike2.model}`);
-    //     $.writeln(`Year: ${bike2.year}`);
-    //     $.writeln(`Category: ${bike2.category}`);
-    //     $.writeln(`Gender: ${bike2.gender}`);
-    //     $.writeln(`Color: ${bike2.color}`);
-    //     $.writeln(`Weight: ${bike2.get_weight_kg()} / ${bike2.weight_lbs()}`);
-    //     $.writeln(`Condition: ${bike2.condition()}`);
-    //     $.writeln(`Price: $${bike2.price}.00`);
-    // }
+        $.writeln(`Brand: ${bike2.brand}`);
+        $.writeln(`Model: ${bike2.model}`);
+        $.writeln(`Year: ${bike2.year}`);
+        $.writeln(`Category: ${bike2.category}`);
+        $.writeln(`Gender: ${bike2.gender}`);
+        $.writeln(`Color: ${bike2.color}`);
+        $.writeln(`Weight: ${bike2.get_weight_kg()} / ${bike2.weight_lbs()}`);
+        $.writeln(`Condition: ${bike2.condition()}`);
+        $.writeln(`Price: $${bike2.price}.00`);
+    }
 
 }
 
