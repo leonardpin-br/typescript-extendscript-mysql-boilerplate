@@ -11,33 +11,20 @@
  * @see			{@link https://masteringjs.io/tutorials/fundamentals/foreach-continue Using Continue in JavaScript forEach()}
  */
 
-//@include "../../node_modules/extendscript-es5-shim/index.js";
-//@include "../../node_modules/extendscript-es6-shim/index.js";
-//@include "../../node_modules/json2/lib/JSON2/static/json2.js";
-
-//@include "./connection.jsx";
-//@include "./database-object.jsx";
-//@include "../shared/utils.jsx";
-
-/* global	$,
-            ConnectionData,
-            Connection,
-            sendMessageToServer,
-            DatabaseObject,
+/* global	DatabaseObject,
             numberFormat */
 /* eslint no-unused-vars: ["error", { "varsIgnorePattern": "Bicycle" }] */
 
+
 /**
- * Temporary class Bicycle.
+ * Creates a Bicycle instance.
  *
  * @class Bicycle
+ * @extends {DatabaseObject}
  */
 class Bicycle extends DatabaseObject {
-    // ----- START OF ACTIVE RECORD CODE -----
 
     protected static tableName: string = 'bicycles';
-
-    protected database: Connection;
 
     protected static dbColumns: string[] = [
         'id',
@@ -53,7 +40,7 @@ class Bicycle extends DatabaseObject {
         'description',
     ];
 
-    protected dbColumns: string[];
+    // protected dbColumns: string[];
 
 
 

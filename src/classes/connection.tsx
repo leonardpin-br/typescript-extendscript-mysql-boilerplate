@@ -1,15 +1,10 @@
-//@include "../../node_modules/extendscript-es5-shim/index.js";
-//@include "../../node_modules/extendscript-es6-shim/index.js";
-//@include "../../node_modules/json2/lib/JSON2/static/json2.js";
-
-//@include "../shared/utils.jsx";
-
 /* global	ConnectionData,
             sendMessageToServer */
 /* eslint no-unused-vars: ["error", { "varsIgnorePattern": "Connection" }] */
+/* eslint class-methods-use-this: off */
 
 /**
- * Mimics **loosely and in a very crud way** the mysqli (PHP) class.
+ * Mimics (loosely and in a very crud way) the mysqli (PHP) class.
  *
  * @class Connection
  */
@@ -69,11 +64,12 @@ class Connection {
             return false;
         }
 
-        /* If it is a creation of a record */
+        // If a record is being created, updated or deleted.
         if (result.affectedRows) {
             this.affectedRows = result.affectedRows;
         }
 
+        // When a record is being created.
         if (result.insertId) {
             this.insertId = result.insertId;
         }

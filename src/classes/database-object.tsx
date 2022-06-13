@@ -1,34 +1,43 @@
-//@include "../../node_modules/extendscript-es5-shim/index.js";
-//@include "../../node_modules/extendscript-es6-shim/index.js";
-//@include "../../node_modules/json2/lib/JSON2/static/json2.js";
-
-//@include "./connection.jsx";
-//@include "../shared/utils.jsx";
-
-/* global	$,
-            ConnectionData,
-            Connection,
-            sendMessageToServer,
-            numberFormat */
+/* global	Connection */
 /* eslint no-unused-vars: ["error", { "varsIgnorePattern": "DatabaseObject" }] */
 
+/**
+ * Class to be instantiated from all the others that access the database.
+ *
+ * @class DatabaseObject
+ */
 class DatabaseObject {
 
-    protected static database: Connection;
+    public static database: Connection;
 
-    protected static tableName = "";
+    /**
+     * tableName is a static property that is meant to be inherited and
+     * overridden in the subclasses.
+     * To allow it to be accessed, it needs to be used like in the example.
+     *
+     * @protected
+     * @static
+     * @type {string}
+     * @memberof DatabaseObject
+     * @example
+     * // Access the inherited subclass static property
+     * this.constructor.tableName
+     */
+    protected static tableName: string = "";
 
-    protected static columns = [];
+    protected static dbColumns = [];
 
     public errors: string[] = [];
 
     /**
-     * Sets the connectionData property to be used in the connection
+     * Sets the database property to be used in the connection
      * with the database.
      *
      * @static
-     * @param {ConnectionData} connectionData
-     * @memberof Bicycle
+     * @param {Connection} database An instance of Connection returned by the
+     *                              dbConnect() shared function inside the
+     *                              /config/initialize.jsx file.
+     * @memberof DatabaseObject
      */
      public static setDatabase(database: Connection): void {
         this.database = database;
@@ -39,8 +48,8 @@ class DatabaseObject {
      *
      * @static
      * @param {string} sql The SQL string to be executed.
-     * @return {*}  {object[]}
-     * @memberof Bicycle
+     * @return {object[]}  {object[]}
+     * @memberof DatabaseObject
      */
     public static findBySql(sql: string): object[] {
         /**
@@ -71,20 +80,34 @@ class DatabaseObject {
      * Finds all records in the given database table.
      *
      * @static
-     * @return {*}  {object[]}
-     * @memberof Bicycle
+     * @return {object[]}  {object[]}
+     * @memberof DatabaseObject
      */
     public static findAll(): object[] {
-        const sql = 'SELECT * FROM bicycles';
+        const sql = `SELECT * FROM ${this.tableName}`;
 
         return this.findBySql(sql);
     }
 
+    /**
+     * Finds a record in the database, using the ID.
+     *
+     * @static
+     * @param {number} id The ID number to be used in the query.
+     * @return {(false | object)}   {(false | object)}  An object corresponding
+     *                              to the database record. False if it does
+     *                              not find.
+     * @memberof DatabaseObject
+     */
     public static findById(id: number): false | object {
-        let sql: string = 'SELECT * FROM bicycles ';
+        let sql: string = `SELECT * FROM ${this.tableName} `;
         sql += `WHERE id='${id}'`;
         const objectArray = this.findBySql(sql);
         if (objectArray.length > 0) {
+
+            /*  This function gets only one record, using the ID.
+                It only makes sense to return the first (and unique) element
+                in the resulting array. */
             return objectArray[0];
         }
 
@@ -98,8 +121,8 @@ class DatabaseObject {
      * @protected
      * @static
      * @param {object} record An object representing a record (row) in the result set.
-     * @return {*}  {object} An instance of the class.
-     * @memberof Bicycle
+     * @return {object}  {object} An instance of the class.
+     * @memberof DatabaseObject
      */
     protected static instantiate(record: object): object {
         const obj = new this();
@@ -114,7 +137,7 @@ class DatabaseObject {
         // }
 
         /*  This method of looping through an object only works because of
-            the "shim" inclusions at the beginning of the file.
+            the "shim" inclusions in initialize.jsx.
             The error in Typescript (line below) happens because this feature
             was added in ES5. */
         /// @ts-ignore: Property 'keys' does not exist on type 'ObjectConstructor'
@@ -146,9 +169,10 @@ class DatabaseObject {
      *
      * @protected
      * @return {(false | object | object[])}    {(false | object | object[])} The
-     *                                          result of the query() method executed
+     *                                          result of the <strong>query()</strong> method executed
      *                                          inside this method.
-     * @memberof Bicycle
+     * @memberof DatabaseObject
+     * @see {@link http://127.0.0.1:8282/Connection.html#query Connection.query}
      */
     protected create() {
         this.database = Bicycle.database;
@@ -159,7 +183,9 @@ class DatabaseObject {
         }
 
         const attributes = this.sanitizedAttributes();
-        let sql = 'INSERT INTO bicycles (';
+
+        /*  this.constructor allows to get the subclass at runtime. */
+        let sql = `INSERT INTO ${this.constructor.tableName} (`;
 
         // Loops through all this.dbColumns array, excluding id.
         for (let i = 0; i < this.dbColumns.length; i += 1) {
@@ -233,7 +259,7 @@ class DatabaseObject {
      * @return {(false | object | object[])}    {(false | object | object[])} The
      *                                          result of the query() method executed
      *                                          inside this method.
-     * @memberof Bicycle
+     * @memberof DatabaseObject
      */
     protected update() {
         this.database = Bicycle.database;
@@ -252,7 +278,7 @@ class DatabaseObject {
             attributePairs.push(`${key}='${attributes[key]}'`);
         });
 
-        let sql: string = 'UPDATE bicycles SET ';
+        let sql: string = `UPDATE ${this.constructor.tableName} SET `;
 
         sql += attributePairs.join(', ');
 
@@ -268,7 +294,7 @@ class DatabaseObject {
      * presence of an ID.
      *
      * @return {*} An instance method (update() or create()).
-     * @memberof Bicycle
+     * @memberof DatabaseObject
      */
     public save() {
         // A new record will not have an ID yet
@@ -286,7 +312,7 @@ class DatabaseObject {
      * @param {object} args The object (that is acting like an associative
      *                      array) containing the new values to be merged
      *                      and later updated.
-     * @memberof Bicycle
+     * @memberof DatabaseObject
      */
     public mergeAttributes(args: object): void {
         /*  Object.keys() only works because of the 'shim' inclusions at the
@@ -314,7 +340,7 @@ class DatabaseObject {
      * @return {object} {object}    Object containing the names of the columns and
      *                              the corresponding values from the instance
      *                              object in memory.
-     * @memberof Bicycle
+     * @memberof DatabaseObject
      */
     public attributes() {
         this.dbColumns = Bicycle.dbColumns;
@@ -340,7 +366,7 @@ class DatabaseObject {
      *
      * @protected
      * @return {object} {object} Object with the values escaped.
-     * @memberof Bicycle
+     * @memberof DatabaseObject
      */
     protected sanitizedAttributes() {
         this.database = Bicycle.database;
@@ -380,12 +406,12 @@ class DatabaseObject {
      * @return {(false | object)}   {(false | object)} The return value will be:
      *                              An object with information provided by MySQL.
      *                              False if there is no answer.
-     * @memberof Bicycle
+     * @memberof DatabaseObject
      */
     public delete() {
         this.database = Bicycle.database;
 
-        let sql = 'DELETE FROM bicycles ';
+        let sql = `DELETE FROM ${this.constructor.tableName} `;
         sql += `WHERE id='${this.database.escapeString(String(this.id))}' `;
         sql += 'LIMIT 1';
 

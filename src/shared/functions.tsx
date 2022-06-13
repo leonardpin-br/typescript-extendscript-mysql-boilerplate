@@ -1,6 +1,6 @@
 //DESCRIPTION: File (not module) with useful functions.
 /**
- * Modified 2022-06-07
+ * Modified 2022-06-11
  * @file		File (not module) with useful functions shared by <br />
  * 				other scripts in the application project.
  * @copyright	Leonardo Pinheiro 2021
@@ -14,12 +14,13 @@
  * @see			{@link https://extendscript.docsforadobe.dev/external-communication/socket-object-reference.html#close close()}
  */
 
-//@include "../../config/db-credentials.jsx";
 
 /* global	BridgeTalk,
             Socket,
-            $ */
-/* eslint no-unused-vars: ["error", { "varsIgnorePattern": "clearConsole|ConnectionData|sendMessageToServer|numberFormat|connection" }] */
+            $,
+            Connection,
+            connectionData */
+/* eslint no-unused-vars: ["error", { "varsIgnorePattern": "ConnectionData|clearConsole|dbConnect|numberFormat|sendMessageToServer" }] */
 /* eslint no-param-reassign: off */
 
 
@@ -47,6 +48,18 @@ function clearConsole() {
         bt.body = 'app.clc()';
         bt.send();
     }
+}
+
+/**
+ * Creates a new instance of the Connection class, using the connectionData
+ * from the ../../config/db-credentials.jsx file.
+ *
+ * @return {Connection} {Connection} A new instance of Connection.
+ */
+function dbConnect() {
+    /// @ts-ignore: Cannot find name 'connectionData'
+    const connection = new Connection(connectionData);
+    return connection;
 }
 
 
