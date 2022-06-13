@@ -7,13 +7,14 @@
  * can access static properties. <strong>this.propertyName</strong> (in static
  * methods) refers to the class itself and not to the instance.
  *
+ * @abstract
  * @class DatabaseObject
  * @example
  * // Public methods (non-static) dont have access to static properties.
  * // So, it can be passed to the instance using the line below.
  * this.database = this.constructor.database;
  */
-class DatabaseObject {
+abstract class DatabaseObject {
 
     /**
      * Holds the connection information used by static methods.
@@ -28,14 +29,14 @@ class DatabaseObject {
     /**
      * Holds the connection information used by public (non-static) menthods.
      *
-     * @private
+     * @protected
      * @memberof DatabaseObject
      * @example
      * // Public methods (non-static) dont have access to static properties.
      * // So, it can be passed to the instance using the line below.
      * this.database = this.constructor.database;
      */
-    private database: Connection;
+    protected database: Connection;
 
     /**
      * tableName is a static property that is meant to be inherited and
@@ -185,18 +186,16 @@ class DatabaseObject {
         return obj;
     }
 
-    protected validate() {
-        this.errors = [];
-
-        if (!this.brand) {
-            this.errors.push('Brand cannot be blank.');
-        }
-        if (!this.model) {
-            this.errors.push('Model cannot be blank.');
-        }
-
-        return this.errors;
-    }
+    /**
+     * Every class that extends this one (DatabaseObject) must implement this
+     * method.
+     *
+     * @protected
+     * @abstract
+     * @return {string[]}  {string[]} The erros string array.
+     * @memberof DatabaseObject
+     */
+    protected abstract validate(): string[];
 
     /**
      * Creates a record in the database with the properties' values of the

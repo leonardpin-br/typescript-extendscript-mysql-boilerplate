@@ -105,7 +105,7 @@
     // Find by ID
     // ----------
 
-    // const result = Bicycle.findById(1);
+    // const result = Bicycle.findById(13);
 
     // if (result !== false) {
 
@@ -131,7 +131,7 @@
     // As if it was a form in a UI
     // ---------------------------
 
-    // const result = Bicycle.findById(16);
+    // const result = Bicycle.findById(13);
     // const myBike = (result as Bicycle);
 
     // /*  args needs to be a generic object to work as an associative array.
@@ -139,7 +139,7 @@
     //     that came from the database (findById). */
     // const args = {
     //     brand: myBike.brand,
-    //     model: "Bob's Overdrive YYY",
+    //     model: "Delete Me",
     //     year: myBike.year,
     //     category: myBike.category,
     //     color: myBike.color,
@@ -195,39 +195,39 @@
     // Create a new bicycle before deleteting it.
     // ------------------------------------------
 
-    const myBike = new Bicycle();
+    // const myBike = new Bicycle();
 
-    myBike.brand = 'Junk Bike';
-    myBike.model = 'Delete me';
-    myBike.year = 1998;
-    myBike.category = 'Road';
-    myBike.color = 'white';
-    myBike.gender = 'Mens';
-    myBike.price = 2;
-    myBike.weight_kg = 1;
-    myBike.condition_id = 3;
-    myBike.description = '';
+    // myBike.brand = 'Junk Bike';
+    // myBike.model = 'Delete me';
+    // myBike.year = 1998;
+    // myBike.category = 'Road';
+    // myBike.color = 'white';
+    // myBike.gender = 'Mens';
+    // myBike.price = 2;
+    // myBike.weight_kg = 1;
+    // myBike.condition_id = 3;
+    // myBike.description = '';
 
-    myBike.save();
-    $.writeln(`The ID of the new bike is: ${myBike.id}`);
+    // myBike.save();
+    // $.writeln(`The ID of the new bike is: ${myBike.id}`);
 
     // Selects the bicycle created and deletes it
     // ------------------------------------------
 
-    // const result = Bicycle.findById(7);
-    // const myBike = (result as Bicycle);
-    // if (! result) {
-    //     $.writeln(`The ID was not found!`);
-    //     return;
-    // }
-    // $.writeln(`The model of the bike from the database is: ${myBike.model}`);
+    const result = Bicycle.findById(13);
+    const myBike = (result as Bicycle);
+    if (! result) {
+        $.writeln(`The ID was not found!`);
+        return;
+    }
+    $.writeln(`The model of the bike from the database is: ${myBike.model}`);
 
 
-    // const resultFromDeletion = myBike.delete();
+    const resultFromDeletion = myBike.delete();
 
-    // if (resultFromDeletion) {
-    //     $.writeln('The bicycle was deleted successfully.');
-    // }
+    if (resultFromDeletion) {
+        $.writeln('The bicycle was deleted successfully.');
+    }
 
 }
 

@@ -130,4 +130,17 @@ class Bicycle extends DatabaseObject {
         }
         return 'Unknown';
     }
+
+    protected validate() {
+        this.errors = [];
+
+        if (!this.brand) {
+            this.errors.push('Brand cannot be blank.');
+        }
+        if (!this.model) {
+            this.errors.push('Model cannot be blank.');
+        }
+
+        return this.errors;
+    }
 }
