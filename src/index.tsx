@@ -195,26 +195,26 @@
     // Create a new bicycle before deleteting it.
     // ------------------------------------------
 
-    // const myBike = new Bicycle();
+    const myBike = new Bicycle();
 
-    // myBike.brand = 'Junk Bike';
-    // myBike.model = 'Delete me';
-    // myBike.year = 1998;
-    // myBike.category = 'Road';
-    // myBike.color = 'white';
-    // myBike.gender = 'Mens';
-    // myBike.price = 2;
-    // myBike.weight_kg = 1;
-    // myBike.condition_id = 3;
-    // myBike.description = '';
+    myBike.brand = 'Junk Bike';
+    myBike.model = 'Delete me';
+    myBike.year = 1998;
+    myBike.category = 'Road';
+    myBike.color = 'white';
+    myBike.gender = 'Mens';
+    myBike.price = 2;
+    myBike.weight_kg = 1;
+    myBike.condition_id = 3;
+    myBike.description = '';
 
-    // myBike.save();
-    // $.writeln(`The ID of the new bike is: ${myBike.id}`);
+    myBike.save();
+    $.writeln(`The ID of the new bike is: ${myBike.id}`);
 
     // Selects the bicycle created and deletes it
     // ------------------------------------------
 
-    // const result = Bicycle.findById(12);
+    // const result = Bicycle.findById(7);
     // const myBike = (result as Bicycle);
     // if (! result) {
     //     $.writeln(`The ID was not found!`);

@@ -2,9 +2,16 @@
 /* eslint no-unused-vars: ["error", { "varsIgnorePattern": "DatabaseObject" }] */
 
 /**
- * Class to be instantiated from all the others that access the database.
+ * Class to be instantiated from all the others that access the database.<br />
+ * It is important to remember that, in TypeScript, <strong>static methods</strong>
+ * can access static properties. <strong>this.propertyName</strong> (in static
+ * methods) refers to the class itself and not to the instance.
  *
  * @class DatabaseObject
+ * @example
+ * // Public methods (non-static) dont have access to static properties.
+ * // So, it can be passed to the instance using the line below.
+ * this.database = this.constructor.database;
  */
 class DatabaseObject {
 
