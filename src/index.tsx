@@ -160,8 +160,12 @@
     // Updated directly from code
     // --------------------------
 
-    // const result = Bicycle.findById(13);
+    // const result = Bicycle.findById(4);
     // const myBike = (result as Bicycle);
+    // if (! result) {
+    //     $.writeln(`The ID was not found!`);
+    //     return;
+    // }
 
     // myBike.brand = 'Schwinn'; // Schwinn UPDATED
     // myBike.model = 'Cutter'; // Cutter
@@ -210,9 +214,14 @@
     // Selects the bicycle created and deletes it
     // ------------------------------------------
 
-    // const result = Bicycle.findById(21);
+    // const result = Bicycle.findById(12);
     // const myBike = (result as Bicycle);
+    // if (! result) {
+    //     $.writeln(`The ID was not found!`);
+    //     return;
+    // }
     // $.writeln(`The model of the bike from the database is: ${myBike.model}`);
+
 
     // const resultFromDeletion = myBike.delete();
 

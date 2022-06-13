@@ -8,7 +8,27 @@
  */
 class DatabaseObject {
 
-    public static database: Connection;
+    /**
+     * Holds the connection information used by static methods.
+     *
+     * @protected
+     * @static
+     * @type {Connection}
+     * @memberof DatabaseObject
+     */
+    protected static database: Connection;
+
+    /**
+     * Holds the connection information used by public (non-static) menthods.
+     *
+     * @private
+     * @memberof DatabaseObject
+     * @example
+     * // Public methods (non-static) dont have access to static properties.
+     * // So, it can be passed to the instance using the line below.
+     * this.database = this.constructor.database;
+     */
+    private database: Connection;
 
     /**
      * tableName is a static property that is meant to be inherited and
@@ -30,7 +50,7 @@ class DatabaseObject {
     public errors: string[] = [];
 
     /**
-     * Sets the database property to be used in the connection
+     * Sets the static database property to be used in the connection
      * with the database.
      *
      * @static
@@ -52,13 +72,13 @@ class DatabaseObject {
      * @memberof DatabaseObject
      */
     public static findBySql(sql: string): object[] {
+        /*  {(false | object | object[])} If the query() is successful,
+            it will be an array containing objects.
+            Each object represents a row in the result set. Every key
+            represents a column in the table (result set). */
         /**
-         * @type {(false | object | object[])}  {(false | object | object[])} If the query() is successful,
-         *                                      it will be an array containing objects.
-         *                                      Each object represents a row in the result set. Every key
-         *                                      represents a column in the table (result set).
+         * @type {(false | object | object[])}
          */
-        /// @ts-ignore: Cannot find name 'JSON'
         const result: object[] = this.database.query(sql);
 
         if (!result) {
@@ -98,6 +118,14 @@ class DatabaseObject {
      *                              to the database record. False if it does
      *                              not find.
      * @memberof DatabaseObject
+     * @example
+     * // This is the way this method should be used:
+     * const result = Bicycle.findById(11);
+     * const myBike = (result as Bicycle);
+     * if (! result) {
+     *     $.writeln(`The ID was not found!`);
+     *     return;
+     * }
      */
     public static findById(id: number): false | object {
         let sql: string = `SELECT * FROM ${this.tableName} `;
@@ -175,7 +203,8 @@ class DatabaseObject {
      * @see {@link http://127.0.0.1:8282/Connection.html#query Connection.query}
      */
     protected create() {
-        this.database = Bicycle.database;
+        /// @ts-ignore: Property 'database' does not exist on type 'Function'
+        this.database = this.constructor.database;
 
         this.validate();
         if (this.errors.length > 0) {
@@ -262,7 +291,8 @@ class DatabaseObject {
      * @memberof DatabaseObject
      */
     protected update() {
-        this.database = Bicycle.database;
+        /// @ts-ignore: Property 'database' does not exist on type 'Function'
+        this.database = this.constructor.database;
 
         this.validate();
         if (this.errors.length > 0) {
@@ -343,7 +373,8 @@ class DatabaseObject {
      * @memberof DatabaseObject
      */
     public attributes() {
-        this.dbColumns = Bicycle.dbColumns;
+        /// @ts-ignore: Property 'database' does not exist on type 'Function'
+        this.dbColumns = this.constructor.dbColumns;
 
         const attributes = {};
 
@@ -369,7 +400,8 @@ class DatabaseObject {
      * @memberof DatabaseObject
      */
     protected sanitizedAttributes() {
-        this.database = Bicycle.database;
+        /// @ts-ignore: Property 'database' does not exist on type 'Function'
+        this.database = this.constructor.database;
 
         const attributes = this.attributes();
         const sanitized = {};
@@ -409,7 +441,8 @@ class DatabaseObject {
      * @memberof DatabaseObject
      */
     public delete() {
-        this.database = Bicycle.database;
+        /// @ts-ignore: Property 'database' does not exist on type 'Function'
+        this.database = this.constructor.database;
 
         let sql = `DELETE FROM ${this.constructor.tableName} `;
         sql += `WHERE id='${this.database.escapeString(String(this.id))}' `;

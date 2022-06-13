@@ -40,7 +40,6 @@ class Bicycle extends DatabaseObject {
         'description',
     ];
 
-    // protected dbColumns: string[];
 
 
 
@@ -87,6 +86,7 @@ class Bicycle extends DatabaseObject {
     };
 
     public constructor(args?) {
+        super();
         if (typeof args !== 'undefined') {
             this.brand = args.brand ? args.brand : '';
             this.model = args.model ? args.model : '';
