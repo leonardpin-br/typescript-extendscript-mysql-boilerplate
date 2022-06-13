@@ -12,8 +12,7 @@
 
 //@include "../config/initialize.jsx";
 
-/* global	database,
-            Bicycle,
+/* global	Bicycle,
 			$ */
 
 /**
@@ -131,7 +130,7 @@
     // As if it was a form in a UI
     // ---------------------------
 
-    // const result = Bicycle.findById(13);
+    // const result = Bicycle.findById(16);
     // const myBike = (result as Bicycle);
 
     // /*  args needs to be a generic object to work as an associative array.
@@ -139,7 +138,7 @@
     //     that came from the database (findById). */
     // const args = {
     //     brand: myBike.brand,
-    //     model: "Delete Me",
+    //     model: "Bob's Overdrive",
     //     year: myBike.year,
     //     category: myBike.category,
     //     color: myBike.color,
@@ -214,7 +213,7 @@
     // Selects the bicycle created and deletes it
     // ------------------------------------------
 
-    const result = Bicycle.findById(13);
+    const result = Bicycle.findById(25);
     const myBike = (result as Bicycle);
     if (! result) {
         $.writeln(`The ID was not found!`);

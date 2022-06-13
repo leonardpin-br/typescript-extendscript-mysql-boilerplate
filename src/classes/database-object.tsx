@@ -4,18 +4,17 @@
 /**
  * Class to be instantiated from all the others that access the database.<br />
  * It is important to remember that, in TypeScript, <strong>static methods</strong>
- * can access static properties. <strong>this.propertyName</strong> (in static
+ * can only access static properties. <strong>this.</strong>propertyName (in static
  * methods) refers to the class itself and not to the instance.
  *
  * @abstract
  * @class DatabaseObject
  * @example
  * // Public methods (non-static) dont have access to static properties.
- * // So, it can be passed to the instance using the line below.
+ * // But, it can be passed to the instance using the line below.
  * this.database = this.constructor.database;
  */
 abstract class DatabaseObject {
-
     /**
      * Holds the connection information used by static methods.
      *
@@ -33,7 +32,7 @@ abstract class DatabaseObject {
      * @memberof DatabaseObject
      * @example
      * // Public methods (non-static) dont have access to static properties.
-     * // So, it can be passed to the instance using the line below.
+     * // But, it can be passed to the instance using the line below.
      * this.database = this.constructor.database;
      */
     protected database: Connection;
@@ -51,24 +50,39 @@ abstract class DatabaseObject {
      * // Access the inherited subclass static property
      * this.constructor.tableName
      */
-    protected static tableName: string = "";
+    protected static tableName: string;
 
-    protected static dbColumns = [];
+    protected tableName: string;
 
-    public errors: string[] = [];
+    protected static dbColumns: string[];
+
+    protected dbColumns: string[];
+
+    public errors: string[];
 
     /**
      * Sets the static database property to be used in the connection
-     * with the database.
+     * with the database server (MySQL).
      *
      * @static
      * @param {Connection} database An instance of Connection returned by the
      *                              dbConnect() shared function inside the
-     *                              /config/initialize.jsx file.
+     *                              &lt;projectRoot&gt;/config/initialize.jsx file.
      * @memberof DatabaseObject
      */
-     public static setDatabase(database: Connection): void {
+    public static setDatabase(database: Connection): void {
         this.database = database;
+    }
+
+    protected setInstanceProperties() {
+        /// @ts-ignore: Property 'database' does not exist on type 'Function'
+        this.database = this.constructor.database;
+
+        /// @ts-ignore: Property 'tableName' does not exist on type 'Function'
+        this.tableName = this.constructor.tableName;
+
+        /// @ts-ignore: Property 'dbColumns' does not exist on type 'Function'
+        this.dbColumns = this.constructor.dbColumns;
     }
 
     /**
@@ -76,16 +90,16 @@ abstract class DatabaseObject {
      *
      * @static
      * @param {string} sql The SQL string to be executed.
-     * @return {object[]}  {object[]}
+     * @return {object[]}   {object[]} Array containing objects from the query
+     *                      result.
      * @memberof DatabaseObject
      */
     public static findBySql(sql: string): object[] {
-        /*  {(false | object | object[])} If the query() is successful,
-            it will be an array containing objects.
-            Each object represents a row in the result set. Every key
-            represents a column in the table (result set). */
+        /*  If the query() is successful, it will be an array containing objects.
+            Each object represents a row in the result set.
+            Every key represents a column in the table (result set). */
         /**
-         * @type {(false | object | object[])}
+         * @type {object[]}
          */
         const result: object[] = this.database.query(sql);
 
@@ -108,7 +122,7 @@ abstract class DatabaseObject {
      * Finds all records in the given database table.
      *
      * @static
-     * @return {object[]}  {object[]}
+     * @return {object[]}  {object[]} Array containing objects.
      * @memberof DatabaseObject
      */
     public static findAll(): object[] {
@@ -124,7 +138,7 @@ abstract class DatabaseObject {
      * @param {number} id The ID number to be used in the query.
      * @return {(false | object)}   {(false | object)}  An object corresponding
      *                              to the database record. False if it does
-     *                              not find.
+     *                              not find anything.
      * @memberof DatabaseObject
      * @example
      * // This is the way this method should be used:
@@ -140,7 +154,6 @@ abstract class DatabaseObject {
         sql += `WHERE id='${id}'`;
         const objectArray = this.findBySql(sql);
         if (objectArray.length > 0) {
-
             /*  This function gets only one record, using the ID.
                 It only makes sense to return the first (and unique) element
                 in the resulting array. */
@@ -157,10 +170,11 @@ abstract class DatabaseObject {
      * @protected
      * @static
      * @param {object} record An object representing a record (row) in the result set.
-     * @return {object}  {object} An instance of the class.
+     * @return {object}  {object} An instance of the subclass.
      * @memberof DatabaseObject
      */
     protected static instantiate(record: object): object {
+        /// @ts-ignore: Cannot create an instance of an abstract class.
         const obj = new this();
 
         /* This is the usual way, in ExtendScript, to loop through an object. */
@@ -192,7 +206,7 @@ abstract class DatabaseObject {
      *
      * @protected
      * @abstract
-     * @return {string[]}  {string[]} The erros string array.
+     * @return {string[]}  {string[]} The errors string array.
      * @memberof DatabaseObject
      */
     protected abstract validate(): string[];
@@ -206,11 +220,10 @@ abstract class DatabaseObject {
      *                                          result of the <strong>query()</strong> method executed
      *                                          inside this method.
      * @memberof DatabaseObject
-     * @see {@link http://127.0.0.1:8282/Connection.html#query Connection.query}
+     * @see {@link Connection#query}
      */
     protected create() {
-        /// @ts-ignore: Property 'database' does not exist on type 'Function'
-        this.database = this.constructor.database;
+        this.setInstanceProperties();
 
         this.validate();
         if (this.errors.length > 0) {
@@ -220,23 +233,20 @@ abstract class DatabaseObject {
         const attributes = this.sanitizedAttributes();
 
         /*  this.constructor allows to get the subclass at runtime. */
+        /// @ts-ignore: Property 'tableName' does not exist on type 'Function'
         let sql = `INSERT INTO ${this.constructor.tableName} (`;
 
         // Loops through all this.dbColumns array, excluding id.
         for (let i = 0; i < this.dbColumns.length; i += 1) {
             // Excludes id.
-            if (this.dbColumns[i] === 'id') {
-                continue;
+            if (this.dbColumns[i] !== 'id') {
+                sql += this.dbColumns[i];
+
+                // Do not add comma and space after the last array element.
+                if (i !== this.dbColumns.length - 1) {
+                    sql += ', ';
+                }
             }
-
-            sql += this.dbColumns[i];
-
-            // Do not add comma and space after the last array element.
-            if (i === this.dbColumns.length - 1) {
-                continue;
-            }
-
-            sql += ', ';
         }
 
         sql += ") VALUES ('";
@@ -277,7 +287,6 @@ abstract class DatabaseObject {
 
         sql += "')";
 
-        /// @ts-ignore: Cannot find name 'JSON'
         const result = this.database.query(sql);
         if (result) {
             this.id = this.database.insertId;
@@ -297,8 +306,7 @@ abstract class DatabaseObject {
      * @memberof DatabaseObject
      */
     protected update() {
-        /// @ts-ignore: Property 'database' does not exist on type 'Function'
-        this.database = this.constructor.database;
+        this.setInstanceProperties();
 
         this.validate();
         if (this.errors.length > 0) {
@@ -329,8 +337,10 @@ abstract class DatabaseObject {
      * Executes the update() or the create() instance methods based on the
      * presence of an ID.
      *
-     * @return {*} An instance method (update() or create()).
+     * @return {(DatabaseObject#update|DatabaseObject#create)} An instance method (update() or create()).
      * @memberof DatabaseObject
+     * @see {@link https://stackoverflow.com/questions/30012043/how-to-document-a-function-returned-by-a-function-using-jsdoc#answer-30393968 How to document a function returned by a function using JSDoc}
+     * @see {@link https://stackoverflow.com/questions/23095975/jsdoc-object-methods-with-method-or-property#answer-59508384 JSDoc object methods with @method or @property?}
      */
     public save() {
         // A new record will not have an ID yet
@@ -351,8 +361,9 @@ abstract class DatabaseObject {
      * @memberof DatabaseObject
      */
     public mergeAttributes(args: object): void {
-        /*  Object.keys() only works because of the 'shim' inclusions at the
-            top of the file. ExtendScript does not know about that.
+        /*  Object.keys() only works because of the 'shim' inclusions inside
+            &lt;projectRoot&gt;/config/initialize.jsx file. ExtendScript does
+            not know about that.
 
             The return value of Object.keys() is an indexed array. */
         /// @ts-ignore: Property 'keys' does not exist on type 'ObjectConstructor'
@@ -362,7 +373,10 @@ abstract class DatabaseObject {
         keys.forEach((key) => {
             value = args[key];
 
-            if (this.hasOwnProperty(key) && value !== null) {
+            if (
+                Object.prototype.hasOwnProperty.call(this, key) &&
+                value !== null
+            ) {
                 this[key] = value;
             }
         });
@@ -379,8 +393,7 @@ abstract class DatabaseObject {
      * @memberof DatabaseObject
      */
     public attributes() {
-        /// @ts-ignore: Property 'database' does not exist on type 'Function'
-        this.dbColumns = this.constructor.dbColumns;
+        this.setInstanceProperties();
 
         const attributes = {};
 
@@ -388,11 +401,9 @@ abstract class DatabaseObject {
         for (let i = 0; i < this.dbColumns.length; i += 1) {
             column = this.dbColumns[i];
 
-            if (column === 'id') {
-                continue;
+            if (column !== 'id') {
+                attributes[column] = this[column];
             }
-
-            attributes[column] = this[column];
         }
 
         return attributes;
@@ -406,8 +417,7 @@ abstract class DatabaseObject {
      * @memberof DatabaseObject
      */
     protected sanitizedAttributes() {
-        /// @ts-ignore: Property 'database' does not exist on type 'Function'
-        this.database = this.constructor.database;
+        this.setInstanceProperties();
 
         const attributes = this.attributes();
         const sanitized = {};
@@ -436,10 +446,11 @@ abstract class DatabaseObject {
      * instance object in memory.
      * After deleting, the instance of the object will still
      * exist, even though the database record does not.
-     * This can be useful, as in:
+     * This can be useful, as in the example below.
+     * @example
      * $.writeln(`${user.firstName} was deleted.`);
-     * but, for example, we can't call user.update() after
-     * calling user.delete().
+     * // But, for example, we can't call user.update() after
+     * // calling user.delete().
      *
      * @return {(false | object)}   {(false | object)} The return value will be:
      *                              An object with information provided by MySQL.
@@ -447,9 +458,9 @@ abstract class DatabaseObject {
      * @memberof DatabaseObject
      */
     public delete() {
-        /// @ts-ignore: Property 'database' does not exist on type 'Function'
-        this.database = this.constructor.database;
+        this.setInstanceProperties();
 
+        /// @ts-ignore: Property 'tableName' does not exist on type 'Function'
         let sql = `DELETE FROM ${this.constructor.tableName} `;
         sql += `WHERE id='${this.database.escapeString(String(this.id))}' `;
         sql += 'LIMIT 1';
@@ -457,5 +468,4 @@ abstract class DatabaseObject {
         const result = this.database.query(sql);
         return result;
     }
-
 }

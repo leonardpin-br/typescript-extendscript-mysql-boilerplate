@@ -52,7 +52,7 @@ function clearConsole() {
 
 /**
  * Creates a new instance of the Connection class, using the connectionData
- * from the ../../config/db-credentials.jsx file.
+ * from the &lt;projectRoot&gt;/config/db-credentials.jsx file.
  *
  * @return {Connection} {Connection} A new instance of Connection.
  */
