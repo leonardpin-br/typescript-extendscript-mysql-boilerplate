@@ -7,9 +7,11 @@
 //@include '../dist/shared/functions.jsx';
 //@include '../dist/classes/database-object.jsx';
 //@include '../dist/classes/bicycle.jsx';
+//@include '../dist/classes/admin.jsx';
 
 /* global	dbConnect,
-            Bicycle */
+            Bicycle,
+            Admin */
 /* eslint no-var: off */
 /* eslint no-unused-vars: ["error", { "varsIgnorePattern": "database" }] */
 
@@ -19,3 +21,4 @@ var database = dbConnect();
     DatabaseObject.setDatabase(database);
     It needs to be done by every class that connects to the database. */
 Bicycle.setDatabase(database);
+Admin.setDatabase(database);

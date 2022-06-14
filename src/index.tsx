@@ -213,21 +213,22 @@
     // Selects the bicycle created and deletes it
     // ------------------------------------------
 
-    const result = Bicycle.findById(25);
-    const myBike = (result as Bicycle);
-    if (! result) {
-        $.writeln(`The ID was not found!`);
-        return;
-    }
-    $.writeln(`The model of the bike from the database is: ${myBike.model}`);
+    // const result = Bicycle.findById(25);
+    // const myBike = (result as Bicycle);
+    // if (! result) {
+    //     $.writeln(`The ID was not found!`);
+    //     return;
+    // }
+    // $.writeln(`The model of the bike from the database is: ${myBike.model}`);
 
 
-    const resultFromDeletion = myBike.delete();
+    // const resultFromDeletion = myBike.delete();
 
-    if (resultFromDeletion) {
-        $.writeln('The bicycle was deleted successfully.');
-    }
+    // if (resultFromDeletion) {
+    //     $.writeln('The bicycle was deleted successfully.');
+    // }
 
+    $.writeln("Hello");
 }
 
 main();
