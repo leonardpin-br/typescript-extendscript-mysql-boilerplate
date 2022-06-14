@@ -26,14 +26,16 @@ abstract class DatabaseObject {
     protected static database: Connection;
 
     /**
-     * Holds the connection information used by public (non-static) menthods.
+     * Holds the connection information used by non-static menthods.
      *
      * @protected
      * @memberof DatabaseObject
      * @example
-     * // Public methods (non-static) dont have access to static properties.
+     * // Non-static methods dont have access to static properties.
      * // But, it can be passed to the instance using the line below.
      * this.database = this.constructor.database;
+     *
+     * @see {@link DatabaseObject#setInstanceProperties}
      */
     protected database: Connection;
 
@@ -49,6 +51,8 @@ abstract class DatabaseObject {
      * @example
      * // Access the inherited subclass static property
      * this.constructor.tableName
+     *
+     * @see {@link DatabaseObject#setInstanceProperties}
      */
     protected static tableName: string;
 
@@ -74,6 +78,18 @@ abstract class DatabaseObject {
         this.database = database;
     }
 
+    /**
+     * As static methods can only access static properties and non-static
+     * methods cannot access static properties directly, this method makes it
+     * possible to the instances to know about the values in the
+     * static properties.
+     *
+     * This is an auxiliary method and it is not part of the example in the
+     * course that inspired this code.
+     *
+     * @protected
+     * @memberof DatabaseObject
+     */
     protected setInstanceProperties() {
         /// @ts-ignore: Property 'database' does not exist on type 'Function'
         this.database = this.constructor.database;

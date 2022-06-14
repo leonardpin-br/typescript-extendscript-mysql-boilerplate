@@ -15,15 +15,13 @@
             numberFormat */
 /* eslint no-unused-vars: ["error", { "varsIgnorePattern": "Bicycle" }] */
 
-
 /**
- * Creates a Bicycle instance.
+ * Class representing a bicycle.
  *
  * @class Bicycle
  * @extends {DatabaseObject}
  */
 class Bicycle extends DatabaseObject {
-
     protected static tableName: string = 'bicycles';
 
     protected static dbColumns: string[] = [
@@ -40,9 +38,7 @@ class Bicycle extends DatabaseObject {
         'description',
     ];
 
-
-
-
+    // -------------------------------------------------------------------------
 
     public id: number;
 
@@ -85,6 +81,12 @@ class Bicycle extends DatabaseObject {
         5: 'Like New',
     };
 
+    /**
+     * Creates an instance of Bicycle.
+     * @param {object} [args]   Generic object, probably from an UI, with keys
+     *                          corresponding to the bicycles table columns.
+     * @memberof Bicycle
+     */
     public constructor(args?) {
         super();
         if (typeof args !== 'undefined') {
