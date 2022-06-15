@@ -5,6 +5,7 @@
 //@include 'db-credentials.jsx';
 //@include '../dist/classes/connection.jsx';
 //@include '../dist/shared/functions.jsx';
+//@include '../dist/shared/validation-functions.jsx';
 //@include '../dist/classes/database-object.jsx';
 //@include '../dist/classes/bicycle.jsx';
 //@include '../dist/classes/admin.jsx';

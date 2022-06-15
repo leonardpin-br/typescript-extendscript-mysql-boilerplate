@@ -228,24 +228,28 @@ function main() {
 
     // CREATE
     // =========================================================================
-    const myAdmin = new Admin();
+    // const myAdmin = new Admin();
 
-    myAdmin.firstName = 'Kevin';
-    myAdmin.lastName = 'Skoglund';
-    myAdmin.email = 'kevin@nowhere.com';
-    myAdmin.username = 'kskoglund';
-    myAdmin.password = 'secretpassword';
-    myAdmin.confirmPassword = 'secretpassword';
+    // // myAdmin.firstName = 'Kevin';
+    // myAdmin.lastName = 'Skoglund';
+    // myAdmin.email = 'kevin@nowhere.com';
+    // myAdmin.username = 'kskoglund';
+    // myAdmin.password = 'secretpassword';
+    // myAdmin.confirmPassword = 'secretpassword';
 
-    myAdmin.save();
+    // myAdmin.save();
 
-    if (myAdmin.errors.length > 0) {
-        for (let i = 0; i < myAdmin.errors.length; i += 1) {
-            $.writeln(myAdmin.errors[i]);
-        }
-    } else {
-        $.writeln(`The ID of the new admin is: ${myAdmin.id}`);
-    }
+    // if (myAdmin.errors.length > 0) {
+    //     for (let i = 0; i < myAdmin.errors.length; i += 1) {
+    //         $.writeln(myAdmin.errors[i]);
+    //     }
+    // } else {
+    //     $.writeln(`The ID of the new admin is: ${myAdmin.id}`);
+    // }
+
+
+    $.writeln(isBlank('          '));
+
 }
 
 main();
