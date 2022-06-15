@@ -18,9 +18,7 @@
 /**
  * The main function of the application.
  */
- function main() {
-
-
+function main() {
     // CREATE
     // =========================================================================
 
@@ -74,7 +72,6 @@
     // $.writeln(`The ID: ${myBike.id}`);
     // $.writeln(`result.affectedRows: ${firstResult.affectedRows}`);
 
-
     // READ
     // =========================================================================
 
@@ -122,7 +119,6 @@
     //     $.writeln(`Condition: ${bike2.condition()}`);
     //     $.writeln(`Price: $${bike2.price}.00`);
     // }
-
 
     // UPDATE
     // =========================================================================
@@ -187,7 +183,6 @@
     //     $.writeln("The bicycle was updated successfully.");
     // }
 
-
     // DELETE
     // =========================================================================
 
@@ -221,19 +216,36 @@
     // }
     // $.writeln(`The model of the bike from the database is: ${myBike.model}`);
 
-
     // const resultFromDeletion = myBike.delete();
 
     // if (resultFromDeletion) {
     //     $.writeln('The bicycle was deleted successfully.');
     // }
 
-    $.writeln(passwordHash("Leonardo"));
-    // $2b$10$Vt9W8C8RpDYGd24YsJREEeb3UmOtyB2Ye7ecNGwjQs0EboOy0YnZu
-    // $2b$10$nDBNW2sZOpeJX7.aANf0sOOnH1D1n45Dy8AiFKsGYcl4R29ihwVo2
+    // =========================================================================
+    // ADMIN
+    // =========================================================================
 
+    // CREATE
+    // =========================================================================
+    const myAdmin = new Admin();
 
-    $.writeln("Hello");
+    myAdmin.firstName = 'Kevin';
+    myAdmin.lastName = 'Skoglund';
+    myAdmin.email = 'kevin@nowhere.com';
+    myAdmin.username = 'kskoglund';
+    myAdmin.password = 'secretpassword';
+    myAdmin.confirmPassword = 'secretpassword';
+
+    myAdmin.save();
+
+    if (myAdmin.errors.length > 0) {
+        for (let i = 0; i < myAdmin.errors.length; i += 1) {
+            $.writeln(myAdmin.errors[i]);
+        }
+    } else {
+        $.writeln(`The ID of the new admin is: ${myAdmin.id}`);
+    }
 }
 
 main();

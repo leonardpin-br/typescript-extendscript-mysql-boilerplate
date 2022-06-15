@@ -13,11 +13,11 @@ class Admin extends DatabaseObject {
 
     protected static dbColumns: string[] = [
         'id',
-        'first_name',
-        'last_name',
+        'firstName',
+        'lastName',
         'email',
         'username',
-        'hashed_password',
+        'hashedPassword',
     ];
 
     // -------------------------------------------------------------------------
@@ -58,5 +58,50 @@ class Admin extends DatabaseObject {
 
     public fullName() {
         return `${this.firstName} ${this.lastName}`;
+    }
+
+    protected setHashedPassword() {
+        const result = passwordHash(this.password);
+        if (typeof result == "string") {
+            this.hashedPassword = result;
+        }
+    }
+
+    protected create() {
+        this.setHashedPassword();
+        return super.create();
+    }
+
+    protected update() {
+        this.setHashedPassword();
+        return super.update();
+    }
+
+    protected validate(): string[] {
+        this.errors = [];
+
+        if (isBlank(this.firstName)) {
+            this.errors.push('First name cannot be blank.');
+        } else if (! hasLength(this.firstName)) {
+            this.errors.push('First name must be between 2 and 255 characters.');
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        return this.errors;
     }
 }

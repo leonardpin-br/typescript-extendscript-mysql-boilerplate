@@ -64,6 +64,42 @@ function dbConnect() {
 }
 
 
+/**
+ * Checks if the string has acceptable length.
+ *
+ * @param {string} strValue The string to be checked.
+ * @param {number} [minValue=2] The minimun value. Defaults to 2.
+ * @param {number} [maxValue=255] The maximun value. Defaults to 255.
+ * @return {boolean}  {boolean} False if the length is not acceptable. True otherwise.
+ */
+function hasLength(strValue: string, minValue: number = 2, maxValue: number = 255): boolean {
+    if (strValue.length < minValue || strValue.length > maxValue) {
+        return false;
+    }
+    return true;
+}
+
+
+/**
+ * Checks if the given string is empty.
+ *
+ * @param {string} strValue The string to be checked.
+ * @return {boolean}  {boolean} True if the string is empty. False otherwise.
+ * @see {@link https://www.w3schools.com/jsref/jsref_trim_string.asp JavaScript String trim()}
+ * @see {@link https://stackoverflow.com/questions/154059/how-can-i-check-for-an-empty-undefined-null-string-in-javascript How can I check for an empty/undefined/null string in JavaScript?}
+ */
+function isBlank(strValue: string): boolean {
+
+    // Removes spaces from the string.
+    const trimmedStr = strValue.replace(/^\s+|\s+$/gm,'');
+
+    if (trimmedStr.length === 0) {
+        return true;
+    }
+    return false;
+}
+
+
 
 function numberFormat (number, decimals, decPoint?, thousandsSep?) {
     // Strip all characters but numerical ones.
@@ -136,7 +172,15 @@ function sendMessageToServer(
 }
 
 
-
+/**
+ * Hashes the password given as argument. This function will send the password
+ * to the Node.js (Net) socket server. There, it will be hashed and sent back.
+ * That server uses only the <strong>bcrypt</strong> algorithm.
+ *
+ * @param {string} password The password to be hashed.
+ * @param {number} [cost=10] The salt rounds (cost) to be used. Defaults to 10.
+ * @return {(string | false)}  {(string | false)} The 60 (sixty) characters hashed password. False if it fails.
+ */
 function passwordHash(password: string, cost: number = 10): string | false {
 
     const passwordHashingData = {
@@ -154,7 +198,7 @@ function passwordHash(password: string, cost: number = 10): string | false {
     const hashResult = sendMessageToServer(JSON.stringify(passwordHashingData));
 
     if (hashResult == null) {
-        $.writeln("There was a problem hashing the password. The result was null.");
+        $.writeln("There was a problem hashing the password. The result from the communication with the server was null.");
         return false;
     }
 
