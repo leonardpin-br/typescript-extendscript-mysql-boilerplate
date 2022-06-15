@@ -20,7 +20,7 @@
             $,
             Connection,
             connectionData */
-/* eslint no-unused-vars: ["error", { "varsIgnorePattern": "ConnectionData|clearConsole|dbConnect|numberFormat|sendMessageToServer" }] */
+/* eslint no-unused-vars: ["error", { "varsIgnorePattern": "ConnectionData|clearConsole|dbConnect|numberFormat|passwordHash|sendMessageToServer" }] */
 /* eslint no-param-reassign: off */
 
 
@@ -50,6 +50,7 @@ function clearConsole() {
     }
 }
 
+
 /**
  * Creates a new instance of the Connection class, using the connectionData
  * from the &lt;projectRoot&gt;/config/db-credentials.jsx file.
@@ -61,6 +62,7 @@ function dbConnect() {
     const connection = new Connection(connectionData);
     return connection;
 }
+
 
 
 function numberFormat (number, decimals, decPoint?, thousandsSep?) {
@@ -90,8 +92,9 @@ function numberFormat (number, decimals, decPoint?, thousandsSep?) {
 
 /**
  * Sends a message to the node.js server (created using the net module).
- * @param {string} message  The message (the ConnectionData object as a string in JSON format) to be sent to the Node.js (Net) server.
-*                           This will be passed on to the MySQL server.
+ * @param {string} message  The message (an object as a string in JSON format) to be sent to the Node.js (Net) server.
+ *                          If it is a query, will be passed on to the MySQL server.
+ *                          If it is a password to be hashed, the socket server will hash it and send the response back.
  * @param {string} [host=127.0.0.1] Optional. The IP or name of the (Net) server. Defaults to &ldquo;127.0.0.1&rdquo;.
  * @param {number} [port=8124]  Optional. The port that the (Net) server is listening on. Defaults to 8124.
  * @param {string} [encoding=UTF-8] Optional. The encoding. Defaults to &ldquo;UTF-8&rdquo;.
@@ -130,4 +133,34 @@ function sendMessageToServer(
         'The connection with the node.js server was stablished, but there was no answer...'
     );
     return null;
+}
+
+
+
+function passwordHash(password: string, cost: number = 10): string | false {
+
+    const passwordHashingData = {
+        hashPassword: true,
+        password: password,
+        cost: cost
+    };
+
+    if (! passwordHashingData.password) {
+        $.writeln("The password cannot be blank.");
+        return false;
+    }
+
+    /// @ts-ignore: Cannot find name 'JSON'
+    const hashResult = sendMessageToServer(JSON.stringify(passwordHashingData));
+
+    if (hashResult == null) {
+        $.writeln("There was a problem hashing the password. The result was null.");
+        return false;
+    }
+
+    /// @ts-ignore: Cannot find name 'JSON'
+    const hashParsed = JSON.parse(hashResult);
+    const returnValue = (hashParsed.hash as string);
+
+    return returnValue;
 }

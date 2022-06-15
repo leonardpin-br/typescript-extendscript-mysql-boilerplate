@@ -228,6 +228,11 @@
     //     $.writeln('The bicycle was deleted successfully.');
     // }
 
+    $.writeln(passwordHash("Leonardo"));
+    // $2b$10$Vt9W8C8RpDYGd24YsJREEeb3UmOtyB2Ye7ecNGwjQs0EboOy0YnZu
+    // $2b$10$nDBNW2sZOpeJX7.aANf0sOOnH1D1n45Dy8AiFKsGYcl4R29ihwVo2
+
+
     $.writeln("Hello");
 }
 

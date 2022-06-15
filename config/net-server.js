@@ -12,6 +12,7 @@
  */
 const net = require("net");
 const mysql = require("mysql");
+const bcrypt = require('bcrypt');
 
 const server = net.createServer();
 
@@ -49,52 +50,71 @@ server.on("connection", (sock) => {
         // Transforms the JSON string in JavaScript object.
         const parsedData = JSON.parse(data);
 
-        // Create a connection.
-        const connection = mysql.createConnection({
-            host: parsedData.databaseParameters.host,
-            user: parsedData.databaseParameters.user,
-            password: parsedData.databaseParameters.password,
-            database: parsedData.databaseParameters.database,
+        // If it is password hashing.
+        if (parsedData.hashPassword) {
+            console.log("\nPassword hashing being executed...\n----------------------------------\n");
 
-            // One-way SSL Authentication.
-            ssl: parsedData.databaseParameters.ssl,
-        });
+            const hash = bcrypt.hashSync(parsedData.password, parsedData.cost);
 
-        // Connect to MySQL.
-        connection.connect((err) => {
-            if (err) {
-                console.log("\n============================================================================");
-                console.error(`Error connecting to the database: ${err.stack}`);
-                // return;
-                throw err;
-            }
-            console.log(
-                "Connected to the database!\n---------------------------"
-            );
-        });
+            const container = {
+                hash
+            };
 
-        // Execute query.
-        connection.query(parsedData.sql, (err, result) => {
-            if (err) {
-                // throw err;
-                writeResultInSocket(JSON.stringify(err.sqlMessage));
-            }
+            console.log("Sending the hashed password back to client...\n---------------------------------------------\n\n");
 
-            // The result has to be a string to be processed.
-            writeResultInSocket(JSON.stringify(result));
+            // The function expects an object or an array of objects.
+            writeResultInSocket(JSON.stringify(container));
 
-            console.log("\nQuery executed.");
-        });
+        // If it is not password hashing.
+        } else {
+            // Create a connection.
+            const connection = mysql.createConnection({
+                host: parsedData.databaseParameters.host,
+                user: parsedData.databaseParameters.user,
+                password: parsedData.databaseParameters.password,
+                database: parsedData.databaseParameters.database,
 
-        // Close the connection.
-        connection.end((err) => {
-            if (err) {
-                throw err;
-            }
-            console.log(
-                "\nThe connection with the database was closed.\n---------------------------------------------\n"
-            );
-        });
+                // One-way SSL Authentication.
+                ssl: parsedData.databaseParameters.ssl,
+            });
+
+            // Connect to MySQL.
+            connection.connect((err) => {
+                if (err) {
+                    console.log("\n============================================================================");
+                    console.error(`Error connecting to the database: ${err.stack}`);
+                    // return;
+                    throw err;
+                }
+                console.log(
+                    "Connected to the database!\n---------------------------"
+                );
+            });
+
+            // Execute query.
+            connection.query(parsedData.sql, (err, result) => {
+                if (err) {
+                    // throw err;
+                    writeResultInSocket(JSON.stringify(err.sqlMessage));
+                }
+
+                // The result has to be a string to be processed.
+                writeResultInSocket(JSON.stringify(result));
+
+                console.log("\nQuery executed.");
+            });
+
+            // Close the connection.
+            connection.end((err) => {
+                if (err) {
+                    throw err;
+                }
+                console.log(
+                    "\nThe connection with the database was closed.\n---------------------------------------------\n"
+                );
+            });
+        }
+
     });
 
     // The connection socket is destroyed on this event.

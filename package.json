@@ -7,6 +7,7 @@
     "author": "Leonardo Pinheiro",
     "license": "ISC",
     "dependencies": {
+        "bcrypt": "^5.0.1",
         "extendscript-es5-shim": "^0.3.1",
         "extendscript-es6-shim": "^0.2.0",
         "json2": "^0.4.0",
@@ -20,7 +21,6 @@
         "eslint-config-airbnb-base": "^15.0.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-import": "^2.26.0",
-        "jssha": "^3.2.0",
         "typescript": "^4.6.4"
     },
     "scripts": {
@@ -28,6 +28,7 @@
         "build:doc": "jsdoc -c jsdoc.json",
         "watch:doc": "nodemon --ext js,jsdoc,jsx --watch dist --exec \"npm run build:doc\"",
         "server:doc": "live-server ./docs --no-css-inject --port=8282",
-        "server:net": "node ./config/net-server.js"
+        "server:net": "node ./config/net-server.js",
+        "debug:net": "ndb ./config/net-server.js"
     }
 }
