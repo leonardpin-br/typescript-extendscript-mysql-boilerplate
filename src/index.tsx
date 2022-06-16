@@ -248,7 +248,7 @@ function main() {
     // }
 
 
-    $.writeln(isBlank('          '));
+    $.writeln(hasLength('abcd', {'exact': 4}));
 
 }
 
