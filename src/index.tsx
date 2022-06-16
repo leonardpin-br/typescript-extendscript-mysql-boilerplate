@@ -312,7 +312,7 @@ function main() {
 
     // $.writeln(objectEquals(obj1, obj2));
 
-    $.writeln(hasExclusionOf(5, [1, 3, 5, 7, 9]));
+    $.writeln(hasValidEmailFormat('nobody@nowhere.com'));
 
 }
 

@@ -1,4 +1,4 @@
-/* eslint no-unused-vars: ["error", { "varsIgnorePattern": "isSet|trim|isBlank|hasPresence|hasLengthGreaterThan|hasLengthLessThan|hasLengthExactly|hasLength|inArray" }] */
+/* eslint no-unused-vars: ["error", { "varsIgnorePattern": "arrayEquals|objectEquals|isSet|trim|inArray|isBlank|hasPresence|hasLengthGreaterThan|hasLengthLessThan|hasLengthExactly|hasLength|hasInclusionOf|hasExclusionOf|hasString|hasValidEmailFormat" }] */
 
 // Utility functions (used by the validation functions)
 // =============================================================================
@@ -402,4 +402,56 @@ function hasInclusionOf(value: any, set: any[]): boolean {
  */
 function hasExclusionOf(value: any, set: any[]): boolean {
     return !inArray(value, set);
+}
+
+/**
+ * Validate inclusion of character(s).<br />
+ * <code>.indesOf</code> returns the index of the first occurrence of
+ * <code>requiredString</code> found, or <code>-1</code> if not found.<br />
+ * Uses <code>!==</code> to prevent position <code>0</code> from being
+ * considered false.
+ *
+ * @param {string} value The string to search in.
+ * @param {string} requiredString The substring to search for.
+ * @return {boolean}  {boolean} true if found. false otherwise.
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/indexOf#return_value String.prototype.indexOf()}
+ * @see {@link https://stackoverflow.com/questions/3978204/jquery-or-javascript-equivalent-of-php-strpos-function-to-find-string-on-a-page jQuery or JavaScript equivalent of PHP strpos function to find string on a page}
+ * @example
+ * // How to call this function:
+ * hasString('nobody@nowhere.com', '.com')
+ */
+function hasString(value: string, requiredString: string): boolean {
+    const result: number = value.indexOf(requiredString);
+
+    // .indexOf returns -1 if it does not find.
+    const foundIt: boolean = result >= 0 ? true : false;
+    return foundIt !== false;
+}
+
+/**
+ * Validate correct format for email addresses.<br />
+ * <code>Format: [chars]@[chars].[2+ letters]</code><br />
+ * <code>.match</code> is helpful. It uses a regular expression and<br />
+ * returns an array for matches, <code>null</code> for no match.
+ *
+ * @param {string} value The string to be matched against the regular expression.
+ * @return {boolean}  {boolean} true if the string has valid format. false otherwise.
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match#return_value String.prototype.match()}
+ * @see {@link https://stackoverflow.com/questions/46155/how-can-i-validate-an-email-address-in-javascript#answer-46181 How can I validate an email address in JavaScript?}
+ */
+function hasValidEmailFormat(value: string): boolean {
+    const emailRegex: RegExp =
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    const matchResult: RegExpMatchArray = String(value)
+        .toLowerCase()
+        .match(emailRegex);
+
+    const result: boolean = matchResult instanceof Array ? true : false;
+    return result;
+}
+
+
+function hasUniqueUsername(username: string, currentId: number = 0): boolean {
+    return false;
 }
