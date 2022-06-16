@@ -375,3 +375,31 @@ function hasLength<T extends { min?: number; max?: number; exact?: number }>(
         return true;
     }
 }
+
+/**
+ * Validate inclusion in a set.
+ *
+ * @param {*} value The value to searched in the set.
+ * @param {any[]} set The array to search in.
+ * @return {boolean}  {boolean} true if found. false otherwise.
+ * @example
+ * // How to call this function:
+ * hasInclusionOf(5, [1, 3, 5, 7, 9])
+ */
+function hasInclusionOf(value: any, set: any[]): boolean {
+    return inArray(value, set);
+}
+
+/**
+ * Validate exclusion from a set.
+ *
+ * @param {*} value The value to search in the set.
+ * @param {any[]} set The array to search for the value.
+ * @return {boolean}  {boolean} true if not in the array. false otherwise.
+ * @example
+ * // How to call this function:
+ * hasExclusionOf(5, [1, 3, 5, 7, 9])
+ */
+function hasExclusionOf(value: any, set: any[]): boolean {
+    return !inArray(value, set);
+}

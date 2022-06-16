@@ -281,36 +281,38 @@ function main() {
     //     $.writeln("'o' was found");
     // }
 
-    const obj1 = {
-        a: true,
-        b: function name() {
-            return true;
-        },
-        c: [1, 2, [3, 4]],
-        d: {
-            x: true,
-            y: 'test',
-            z: ['a', 'b', ['c', 'd']]
-        },
-        e: 'My string',
-        f: 10
-    };
-    const obj2 = {
-        a: true,
-        b: function name() {
-            return true;
-        },
-        c: [1, 2, [3, 4]],
-        d: {
-            x: true,
-            y: 'test',
-            z: ['a', 'b', ['c', 'd']]
-        },
-        e: 'My string',
-        f: 10
-    };
+    // const obj1 = {
+    //     a: true,
+    //     b: function name() {
+    //         return true;
+    //     },
+    //     c: [1, 2, [3, 4]],
+    //     d: {
+    //         x: true,
+    //         y: 'test',
+    //         z: ['a', 'b', ['c', 'd']]
+    //     },
+    //     e: 'My string',
+    //     f: 10
+    // };
+    // const obj2 = {
+    //     a: true,
+    //     b: function name() {
+    //         return true;
+    //     },
+    //     c: [1, 2, [3, 4]],
+    //     d: {
+    //         x: true,
+    //         y: 'test',
+    //         z: ['a', 'b', ['c', 'd']]
+    //     },
+    //     e: 'My string',
+    //     f: 10
+    // };
 
-    $.writeln(objectEquals(obj1, obj2));
+    // $.writeln(objectEquals(obj1, obj2));
+
+    $.writeln(hasExclusionOf(5, [1, 3, 5, 7, 9]));
 
 }
 
