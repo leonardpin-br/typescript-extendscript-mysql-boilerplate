@@ -247,8 +247,70 @@ function main() {
     //     $.writeln(`The ID of the new admin is: ${myAdmin.id}`);
     // }
 
+    // const os = Array('Mac', 'NT', 'Irix', 'Linux');
+    // if (inArray('Irix', os)) {
+    //     $.writeln('Got Irix');
+    // }
+    // if (inArray('mac', os)) {
+    //     $.writeln('Got mac');
+    // }
 
-    $.writeln(hasLength('abcd', {'exact': 4}));
+
+    // const a = ['1.10', 12.4, 1.13];
+
+    // if(inArray('12.4', a)) {
+    //     $.writeln("'12.4' found with strict check");
+    // }
+
+    // if (inArray(1.13, a)) {
+    //     $.writeln("1.13 found with strict check");
+    // }
+
+
+    // let a = [['p', 'r'], ['p', 'h'], 'o'];
+
+    // if (inArray(['p', 'h'], a)) {
+    //     $.writeln("'ph' was found");
+    // }
+
+    // if (inArray(['f', 'i'], a)) {
+    //     $.writeln("'fi' was found");
+    // }
+
+    // if (inArray('o', a)) {
+    //     $.writeln("'o' was found");
+    // }
+
+    const obj1 = {
+        a: true,
+        b: function name() {
+            return true;
+        },
+        c: [1, 2, [3, 4]],
+        d: {
+            x: true,
+            y: 'test',
+            z: ['a', 'b', ['c', 'd']]
+        },
+        e: 'My string',
+        f: 10
+    };
+    const obj2 = {
+        a: true,
+        b: function name() {
+            return true;
+        },
+        c: [1, 2, [3, 4]],
+        d: {
+            x: true,
+            y: 'test',
+            z: ['a', 'b', ['c', 'd']]
+        },
+        e: 'My string',
+        f: 10
+    };
+
+    $.writeln(objectEquals(obj1, obj2));
 
 }
 

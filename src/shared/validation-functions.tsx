@@ -1,4 +1,159 @@
-/* eslint no-unused-vars: ["error", { "varsIgnorePattern": "isSet|isBlank|hasPresence" }] */
+/* eslint no-unused-vars: ["error", { "varsIgnorePattern": "isSet|trim|isBlank|hasPresence|hasLengthGreaterThan|hasLengthLessThan|hasLengthExactly|hasLength|inArray" }] */
+
+// Utility functions (used by the validation functions)
+// =============================================================================
+
+/**
+ * Recursive utility function to compare arrays.
+ *
+ * @param {any[]} arr1 The first array.
+ * @param {any[]} arr2 The second array.
+ * @return {boolean}    {boolean} true if the elements inside the arrays are
+ *                      equal. false otherwise.
+ * @see {@link https://stackoverflow.com/questions/7837456/how-to-compare-arrays-in-javascript#answer-14853974 How to compare arrays in JavaScript?}
+ * @example
+ * // Return false
+ * arrayEquals([1, 2, ['3', 4]], [1, 2, [3, 4]])
+ */
+function arrayEquals(arr1: any[], arr2: any[]): boolean {
+    // Check if both arguments are really arrays.
+    if (!(arr1 instanceof Array) || !(arr2 instanceof Array)) {
+        $.writeln(
+            'arrayEquals(): One or both of the arguments is (are) not array(s).'
+        );
+        return false;
+    }
+
+    //  If the arrays have different lengths.
+    if (arr1.length != arr2.length) {
+        // $.writeln('arrayEquals(): The arrays have different lengths.');
+        return false;
+    }
+
+    // Loops through all the elements of the first array.
+    for (let i = 0; i < arr1.length; i += 1) {
+        // Check if we have nested arrays.
+        if (arr1[i] instanceof Array && arr2[i] instanceof Array) {
+            // Recurse into the nested arrays.
+            if (!arrayEquals(arr1[i], arr2[i])) {
+                return false;
+            }
+        }
+        // The elements must be of the same type.
+        else if (arr1[i] !== arr2[i]) {
+            // $.writeln('arrayEquals(): At least one pair of corresponding elements of each array does not match.');
+            return false;
+        }
+    }
+
+    // $.writeln('arrayEquals(): The arrays are equal.');
+    return true;
+}
+
+/**
+ * Only make use of it if the object structure is used to contain data.<br />
+ * The comparison isn't too deep. Method implementation, for example,<br />
+ * is not compared. See the example.
+ *
+ * @param {object} obj1 The first object.
+ * @param {object} obj2 The second object.
+ * @return {boolean}  {boolean} true if the objects are equal. false otherwise.
+ * @see {@link https://stackoverflow.com/questions/7837456/how-to-compare-arrays-in-javascript#answer-14853974 How to compare arrays in JavaScript?}
+ * @example
+ * // Return true
+ * const obj1 = {
+        a: true,
+        b: function name() { // <<< Atention!
+            return true;
+        },
+        c: [1, 2, [3, 4]],
+        d: {
+            x: true,
+            y: 'test',
+            z: ['a', 'b', ['c', 'd']]
+        }
+    };
+
+    const obj2 = {
+        a: true,
+        b: function otherName() { // <<< Atention!
+            return true;
+        },
+        c: [1, 2, [3, 4]],
+        d: {
+            x: true,
+            y: 'test',
+            z: ['a', 'b', ['c', 'd']]
+        }
+    }
+
+    $.writeln(objectEquals(obj1, obj2));
+ */
+function objectEquals(obj1: object, obj2: object): boolean {
+    /*  First object
+        Superficial check.
+        --------------------------------------------------------------------- */
+    for (let propName in obj1) {
+        // Check for inherited methods and properties.
+        if (obj1.hasOwnProperty(propName) != obj2.hasOwnProperty(propName)) {
+            return false;
+        }
+        // Check for property types
+        else if (typeof obj1[propName] != typeof obj2[propName]) {
+            return false;
+        }
+    }
+
+    /*  Second object
+        Deeper check.
+        There may be a property that only exists in obj2.
+        --------------------------------------------------------------------- */
+    for (let propName in obj2) {
+        if (obj1.hasOwnProperty(propName) != obj2.hasOwnProperty(propName)) {
+            return false;
+        }
+        // Check for property types
+        else if (typeof obj1[propName] != typeof obj2[propName]) {
+            return false;
+        }
+
+        // If the property is inherited, do not check anymore.
+        if (!obj1.hasOwnProperty(propName)) {
+            continue;
+        }
+
+        // Detailed check
+
+        // If the property is an array.
+        if (
+            obj1[propName] instanceof Array &&
+            obj2[propName] instanceof Array
+        ) {
+            if (!arrayEquals(obj1[propName], obj2[propName])) {
+                return false;
+            }
+        }
+
+        // If the property is an object.
+        else if (
+            obj1[propName] instanceof Object &&
+            obj2[propName] instanceof Object
+        ) {
+            // Recursion.
+            if (!objectEquals(obj1[propName], obj2[propName])) {
+                return false;
+            }
+        }
+
+        // Normal value comparison for strings and numbers.
+        else if (obj1[propName] !== obj2[propName]) {
+            return false;
+        }
+    }
+
+    // If everything passed
+    return true;
+}
 
 /**
  * Mimics loosely the behavior of the PHP function isset().
@@ -39,6 +194,48 @@ function trim(value: string): string {
         .replace(/^\0+|\0+$/gm, '')
         .replace(/^\v+|\v+$/gm, '');
 }
+
+/**
+ * Mimics loosely the behaviour of the PHP in_array() function.<br />
+ * Checks if a value exists in an array.<br />
+ * Differently from the original in_array(), this one is always strict.<br />
+ * See reference.
+ *
+ * @param {*} needle The searched value.
+ * @param {any[]} haystack The array.
+ * @return {boolean}  {boolean} Returns true if needle is found in the array, false otherwise.
+ * @see {@link https://stackoverflow.com/questions/7837456/how-to-compare-arrays-in-javascript How to compare arrays in JavaScript?}
+ * @see {@link https://www.php.net/manual/en/function.in-array.php#106319  beingmrkenny at gmail dot com}
+ */
+function inArray(needle: any, haystack: any[]): boolean {
+    for (let i = 0; i < haystack.length; i += 1) {
+        // In case needle is an array.
+        if (needle instanceof Array && haystack[i] instanceof Array) {
+            /*  If the arrays are equal, it means the searched element is
+                in the array. */
+            if (arrayEquals(needle, haystack[i])) {
+                return true;
+            }
+        }
+
+        // In case needle is an (simple) object.
+        else if (needle instanceof Object && haystack[i] instanceof Object) {
+            if (objectEquals(needle, haystack[i])) {
+                return true;
+            }
+        }
+
+        // In case needle is neither an array nor an object.
+        else if (needle === haystack[i]) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+// Validation functions
+// =============================================================================
 
 /**
  * Checks if the given string is empty.<br />
@@ -155,12 +352,24 @@ function hasLengthExactly(value: string, exact: number): boolean {
  * // How to call this function:
  * hasLength('abcd', {'min': 3, 'max': 5})
  */
-function hasLength<T extends {min?: number, max?: number, exact?: number}>(value: string, options: T): boolean {
-    if (isSet(options['min']) && !hasLengthGreaterThan(value, options['min'] - 1)) {
+function hasLength<T extends { min?: number; max?: number; exact?: number }>(
+    value: string,
+    options: T
+): boolean {
+    if (
+        isSet(options['min']) &&
+        !hasLengthGreaterThan(value, options['min'] - 1)
+    ) {
         return false;
-    } else if (isSet(options['max']) && !hasLengthLessThan(value, options['max'] + 1)) {
+    } else if (
+        isSet(options['max']) &&
+        !hasLengthLessThan(value, options['max'] + 1)
+    ) {
         return false;
-    } else if (isSet(options['exact']) && !hasLengthExactly(value, options['exact'])) {
+    } else if (
+        isSet(options['exact']) &&
+        !hasLengthExactly(value, options['exact'])
+    ) {
         return false;
     } else {
         return true;
