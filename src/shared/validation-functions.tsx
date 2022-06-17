@@ -1,4 +1,4 @@
-/* eslint no-unused-vars: ["error", { "varsIgnorePattern": "arrayEquals|objectEquals|isSet|trim|inArray|isBlank|hasPresence|hasLengthGreaterThan|hasLengthLessThan|hasLengthExactly|hasLength|hasInclusionOf|hasExclusionOf|hasString|hasValidEmailFormat" }] */
+/* eslint no-unused-vars: ["error", { "varsIgnorePattern": "arrayEquals|objectEquals|isSet|trim|inArray|isBlank|hasPresence|hasLengthGreaterThan|hasLengthLessThan|hasLengthExactly|hasLength|hasInclusionOf|hasExclusionOf|hasString|hasValidEmailFormat|hasUniqueUsername" }] */
 
 // Utility functions (used by the validation functions)
 // =============================================================================
@@ -451,7 +451,32 @@ function hasValidEmailFormat(value: string): boolean {
     return result;
 }
 
-
+/**
+ * Validates uniqueness of admins.username.<br />
+ * For new records, provide only the username.<br />
+ * For existing records, provide current ID as second argument.<br />
+ *
+ * @param {string} username The username to look up in the database.
+ * @param {number} [currentId=0]    If the ID is provided, that means it is an
+ *                                  existing user. If it is not provided, that
+ *                                  is 0, it means it is a new user.
+ *                                  This will be used in the
+ *                                  Admin.validate() method. Defaults to 0.
+ * @return {boolean}  {boolean} true if the username is unique. false otherwise.
+ * @example
+ * // Calling this function for new users:
+ * hasUniqueUsername('johnqpublic')
+ * // Calling this function for existing users:
+ * hasUniqueUsername('johnqpublic', 4)
+ */
 function hasUniqueUsername(username: string, currentId: number = 0): boolean {
-    return false;
+    const result: false | object = Admin.findByUsername(username);
+    const admin: false | Admin = (result !== false) ? (result as Admin) : false;
+    if (admin === false || admin.id == currentId) {
+        // Is unique.
+        return true;
+    } else {
+        // Not unique.
+        return false;
+    }
 }

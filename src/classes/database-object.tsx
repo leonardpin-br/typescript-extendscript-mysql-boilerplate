@@ -54,15 +54,15 @@ abstract class DatabaseObject {
      *
      * @see {@link DatabaseObject#setInstanceProperties}
      */
-    protected static tableName: string;
+    protected static tableName: string = '';
 
-    protected tableName: string;
+    protected tableName: string = '';
 
-    protected static dbColumns: string[];
+    protected static dbColumns: string[] = [];
 
-    protected dbColumns: string[];
+    protected dbColumns: string[] = [];
 
-    public errors: string[];
+    public errors: string[] = [];
 
     /**
      * Sets the static database property to be used in the connection
@@ -167,7 +167,7 @@ abstract class DatabaseObject {
      */
     public static findById(id: number): false | object {
         let sql: string = `SELECT * FROM ${this.tableName} `;
-        sql += `WHERE id='${id}'`;
+        sql += `WHERE id='${this.database.escapeString(String(id))}'`;
         const objectArray = this.findBySql(sql);
         if (objectArray.length > 0) {
             /*  This function gets only one record, using the ID.

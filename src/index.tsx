@@ -230,12 +230,12 @@ function main() {
     // =========================================================================
     // const myAdmin = new Admin();
 
-    // // myAdmin.firstName = 'Kevin';
-    // myAdmin.lastName = 'Skoglund';
-    // myAdmin.email = 'kevin@nowhere.com';
-    // myAdmin.username = 'kskoglund';
-    // myAdmin.password = 'secretpassword';
-    // myAdmin.confirmPassword = 'secretpassword';
+    // myAdmin.firstName = 'Bob';
+    // myAdmin.lastName = 'Smith';
+    // myAdmin.email = 'b@b.com';
+    // myAdmin.username = "bob'smith";
+    // myAdmin.password = '';
+    // myAdmin.confirmPassword = '';
 
     // myAdmin.save();
 
@@ -247,72 +247,83 @@ function main() {
     //     $.writeln(`The ID of the new admin is: ${myAdmin.id}`);
     // }
 
-    // const os = Array('Mac', 'NT', 'Irix', 'Linux');
-    // if (inArray('Irix', os)) {
-    //     $.writeln('Got Irix');
-    // }
-    // if (inArray('mac', os)) {
-    //     $.writeln('Got mac');
-    // }
+    // UPDATE
+    // =========================================================================
 
+    // // As if it was a form in a UI
+    // // ---------------------------
 
-    // const a = ['1.10', 12.4, 1.13];
+    // const result = Admin.findById(1);
+    // const myAdmin = (result as Admin);
 
-    // if(inArray('12.4', a)) {
-    //     $.writeln("'12.4' found with strict check");
-    // }
-
-    // if (inArray(1.13, a)) {
-    //     $.writeln("1.13 found with strict check");
-    // }
-
-
-    // let a = [['p', 'r'], ['p', 'h'], 'o'];
-
-    // if (inArray(['p', 'h'], a)) {
-    //     $.writeln("'ph' was found");
-    // }
-
-    // if (inArray(['f', 'i'], a)) {
-    //     $.writeln("'fi' was found");
-    // }
-
-    // if (inArray('o', a)) {
-    //     $.writeln("'o' was found");
-    // }
-
-    // const obj1 = {
-    //     a: true,
-    //     b: function name() {
-    //         return true;
-    //     },
-    //     c: [1, 2, [3, 4]],
-    //     d: {
-    //         x: true,
-    //         y: 'test',
-    //         z: ['a', 'b', ['c', 'd']]
-    //     },
-    //     e: 'My string',
-    //     f: 10
-    // };
-    // const obj2 = {
-    //     a: true,
-    //     b: function name() {
-    //         return true;
-    //     },
-    //     c: [1, 2, [3, 4]],
-    //     d: {
-    //         x: true,
-    //         y: 'test',
-    //         z: ['a', 'b', ['c', 'd']]
-    //     },
-    //     e: 'My string',
-    //     f: 10
+    // /*  args needs to be a generic object to work as an associative array.
+    //     It is acting here as a form (maybe in a UI) that receives the values
+    //     that came from the database (findById). */
+    // const args = {
+    //     firstName: myAdmin.firstName,
+    //     lastName: myAdmin.lastName,
+    //     email: 'kevin@somewhere.com',
+    //     username: myAdmin.username,
+    //     password: 'xyz',
+    //     confirmPassword: ''
     // };
 
-    // $.writeln(objectEquals(obj1, obj2));
+    // myAdmin.mergeAttributes(args);
+    // const resultFromUpdating = myAdmin.save();
 
-    $.writeln(hasValidEmailFormat('nobody@nowhere.com'));
+    // if (resultFromUpdating) {
+    //     $.writeln("The admin was updated successfully.");
+    // } else {
+    //     for (let i = 0; i < myAdmin.errors.length; i += 1) {
+    //         $.writeln(myAdmin.errors[i]);
+    //     }
+    // }
+
+    // // Updated directly from code
+    // // --------------------------
+
+    // const result = Admin.findById(1);
+    // const myAdmin = (result as Admin);
+    // if (! result) {
+    //     $.writeln(`The ID was not found!`);
+    //     return;
+    // }
+
+    // myAdmin.firstName = 'Kevin'; // Kevin UPDATED
+    // myAdmin.lastName = 'Skoglund'; // Skoglund
+    // myAdmin.email = 'kevin@nowhere.com';
+    // myAdmin.username = 'kskoglund';
+
+    // myAdmin.save();
+
+    // if (myAdmin.errors.length > 0) {
+    //     for (let i = 0; i < myAdmin.errors.length; i += 1) {
+    //         $.writeln(myAdmin.errors[i]);
+    //     }
+    // } else {
+    //     $.writeln("The admin was updated successfully.");
+    // }
+
+
+    // PASSWORD VERIFICATION
+    // =========================================================================
+
+    // As if it was a form in a UI
+    // ---------------------------
+
+    const result = Admin.findByUsername('kskoglund');
+    if (result === false) {
+        $.writeln('Username not found!');
+    } else {
+        const admin = result as Admin;
+        const verificationResult = admin.verifyPassword('Password#1234');
+
+        if (verificationResult) {
+            $.writeln('Passwords match!');
+        } else {
+            $.writeln("Passwords DON'T MATCH!!!");
+        }
+    }
 
 }
 

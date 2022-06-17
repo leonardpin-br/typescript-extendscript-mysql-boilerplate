@@ -91,7 +91,7 @@ function numberFormat(number, decimals, decPoint?, thousandsSep?) {
  * @param {string} [host=127.0.0.1] Optional. The IP or name of the (Net) server. Defaults to &ldquo;127.0.0.1&rdquo;.
  * @param {number} [port=8124]  Optional. The port that the (Net) server is listening on. Defaults to 8124.
  * @param {string} [encoding=UTF-8] Optional. The encoding. Defaults to &ldquo;UTF-8&rdquo;.
- * @returns {?string}   The reply from the (Net) server. null if there is no answer.
+ * @returns {?string} {?string} The reply from the (Net) server. null if there is no answer.
  */
 function sendMessageToServer(
     message: string,
@@ -145,7 +145,7 @@ function passwordHash(password: string, cost: number = 10): string | false {
     };
 
     if (!passwordHashingData.password) {
-        $.writeln('The password cannot be blank.');
+        $.writeln('passwordHash(): The password cannot be blank.');
         return false;
     }
 
@@ -164,4 +164,43 @@ function passwordHash(password: string, cost: number = 10): string | false {
     const returnValue = hashParsed.hash as string;
 
     return returnValue;
+}
+
+/**
+ * Handles the verification of the password given as argument against the hashed version.
+ * This function will send the password to the Node.js (Net) socket server.
+ * There, it will be verified and the answer will be sent back.
+ * That server uses only the <strong>bcrypt</strong> algorithm.
+ *
+ * @param {string} password The password to be verified.
+ * @param {string} hashedPassword The hashed password (from the database).
+ * @return {?boolean}   {?boolean} true or false if they match or not.
+ *                      null if the verification fails.
+ */
+function passwordVerify(password: string, hashedPassword: string): boolean | null {
+    const passwordVerificationData = {
+        verifyPassword: true,
+        password: password,
+        hashedPassword: hashedPassword
+    };
+
+    if (!passwordVerificationData.password) {
+        $.writeln('passwordVerify(): The password cannot be blank.');
+        return null;
+    }
+
+    /// @ts-ignore: Cannot find name 'JSON'
+    const serverResponse: string | null = sendMessageToServer(JSON.stringify(passwordVerificationData));
+
+    if (serverResponse == null) {
+        $.writeln(
+            'passwordVerify(): There was a problem verifying the password. The result from the communication with the server was null.'
+        );
+        return null;
+    }
+
+    /// @ts-ignore: Cannot find name 'JSON'
+    const verificationResult = JSON.parse(serverResponse) as {'result': boolean};
+
+    return verificationResult.result;
 }

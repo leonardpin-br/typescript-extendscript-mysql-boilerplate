@@ -9,6 +9,7 @@
  * @see		{@link https://stackoverflow.com/questions/49089285/is-ssl-true-a-valid-option-to-connect-to-a-mysql-server-using-ssl Is "ssl : true" a valid option to connect to a mysql server using ssl}
  * @see		{@link https://mariadb.com/kb/en/nodejs-connection-options/#one-way-ssl-authentication One-way SSL Authentication}
  * @see		{@link https://www.youtube.com/watch?v=2oFKNL7vYV8 Getting started with Node.js debugging in VS Code}
+ * @see		{@link https://stackoverflow.com/questions/9006988/node-js-on-windows-how-to-clear-console#answer-26373971 Node.Js on windows - How to clear console}
  */
 const net = require("net");
 const mysql = require("mysql");
@@ -22,6 +23,7 @@ const server = net.createServer();
 /*	At the connection event, node.js creates an instance of net.Socket.
      The parameter sock is the net.Socket instance just created. */
 server.on("connection", (sock) => {
+    process.stdout.write('\033c');
     console.log("Client connected to this node.js (Net) server!\n");
 
     // Defines the encoding of the connection socket.
@@ -65,8 +67,25 @@ server.on("connection", (sock) => {
             // The function expects an object or an array of objects.
             writeResultInSocket(JSON.stringify(container));
 
-        // If it is not password hashing.
-        } else {
+        }
+        // If it is password verification.
+        else if (parsedData.verifyPassword) {
+            console.log("\nPassword verification being executed...\n---------------------------------------\n");
+
+            const verificationResult = bcrypt.compareSync(parsedData.password, parsedData.hashedPassword);
+
+            const container = {
+                result: verificationResult
+            };
+
+            console.log("Sending the result of the password verification back to the client...\n---------------------------------------------------------------------\n\n");
+
+            // The function expects an object or an array of objects.
+            writeResultInSocket(JSON.stringify(container));
+        }
+        /*  If it is neither password hashing nor password verification, it
+            means it is a communication with the MySQL server. */
+        else {
             // Create a connection.
             const connection = mysql.createConnection({
                 host: parsedData.databaseParameters.host,
