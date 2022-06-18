@@ -62,7 +62,9 @@ function dbConnect(): Connection {
 
 /**
  * Rounds the given number to a specified number of decimal places.
+ * See reference for author in stack overflow.
  *
+ * @author razu
  * @param {number} value    The number (to be converted to float if necessary)
  *                          to be returned with decimal places (rounded).
  * @param {number} decimalPlaces The number of decimal places desired.
