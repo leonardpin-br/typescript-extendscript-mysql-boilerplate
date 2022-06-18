@@ -75,7 +75,10 @@ function roundNumber(value: number, decimalPlaces: number): number {
 
 /**
  * Mimics the behaviour of PHP function number_format().
+ * See the reference for the authors in stack overflow.
  *
+ * @author Kerry Jones
+ * @author T.J. Crowder
  * @param {number} number The number to be formatted.
  * @param {number} decimals The number of decimal places.
  * @param {string} [dec_point='.'] The decimal separator. Defaults to &lsquo;.&rsquo;.
