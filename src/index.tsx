@@ -13,6 +13,7 @@
 //@include "../config/initialize.jsx";
 
 /* global	Bicycle,
+            Admin,
 			$ */
 
 /**
@@ -78,30 +79,30 @@ function main() {
     // Find all
     // --------
 
-    // const bikes: object[] = Bicycle.findAll();
-    // let bike;
+    const bikes: object[] = Bicycle.findAll();
+    let bike;
 
-    // for (let i = 0; i < bikes.length; i += 1) {
+    for (let i = 0; i < bikes.length; i += 1) {
 
-    //     bike = bikes[i];
+        bike = bikes[i];
 
-    //     $.writeln(`Brand: ${bike.brand}`);
-    //     $.writeln(`Model: ${bike.model}`);
-    //     $.writeln(`Year: ${bike.year}`);
-    //     $.writeln(`Category: ${bike.category}`);
-    //     $.writeln(`Gender: ${bike.gender}`);
-    //     $.writeln(`Color: ${bike.color}`);
-    //     $.writeln(`Weight: ${bike.get_weight_kg()} / ${bike.weight_lbs()}`);
-    //     $.writeln(`Condition: ${bike.condition()}`);
-    //     $.writeln(`Price: $${bike.price}.00`);
-    //     $.writeln("------------------------------------------------\n");
+        $.writeln(`Brand: ${bike.brand}`);
+        $.writeln(`Model: ${bike.model}`);
+        $.writeln(`Year: ${bike.year}`);
+        $.writeln(`Category: ${bike.category}`);
+        $.writeln(`Gender: ${bike.gender}`);
+        $.writeln(`Color: ${bike.color}`);
+        $.writeln(`Weight: ${bike.getWeightKg()} / ${bike.weightLbs()}`);
+        $.writeln(`Condition: ${bike.condition()}`);
+        $.writeln(`Price: $${bike.price}.00`);
+        $.writeln("------------------------------------------------\n");
 
-    // }
+    }
 
     // Find by ID
     // ----------
 
-    // const result = Bicycle.findById(13);
+    // const result = Bicycle.findById(16);
 
     // if (result !== false) {
 
@@ -115,7 +116,7 @@ function main() {
     //     $.writeln(`Category: ${bike2.category}`);
     //     $.writeln(`Gender: ${bike2.gender}`);
     //     $.writeln(`Color: ${bike2.color}`);
-    //     $.writeln(`Weight: ${bike2.get_weight_kg()} / ${bike2.weight_lbs()}`);
+    //     $.writeln(`Weight: ${bike2.getWeightKg()} / ${bike2.weightLbs()}`);
     //     $.writeln(`Condition: ${bike2.condition()}`);
     //     $.writeln(`Price: $${bike2.price}.00`);
     // }
@@ -155,7 +156,7 @@ function main() {
     // Updated directly from code
     // --------------------------
 
-    // const result = Bicycle.findById(4);
+    // const result = Bicycle.findById(13);
     // const myBike = (result as Bicycle);
     // if (! result) {
     //     $.writeln(`The ID was not found!`);
@@ -208,18 +209,17 @@ function main() {
     // Selects the bicycle created and deletes it
     // ------------------------------------------
 
-    // const result = Bicycle.findById(25);
+    // const result = Bicycle.findById(27);
     // const myBike = (result as Bicycle);
     // if (! result) {
     //     $.writeln(`The ID was not found!`);
     //     return;
     // }
-    // $.writeln(`The model of the bike from the database is: ${myBike.model}`);
 
     // const resultFromDeletion = myBike.delete();
 
     // if (resultFromDeletion) {
-    //     $.writeln('The bicycle was deleted successfully.');
+    //     $.writeln(`The bicycle '${myBike.model}' was deleted successfully.`);
     // }
 
     // =========================================================================
@@ -233,9 +233,9 @@ function main() {
     // myAdmin.firstName = 'Bob';
     // myAdmin.lastName = 'Smith';
     // myAdmin.email = 'b@b.com';
-    // myAdmin.username = "bob'smith";
-    // myAdmin.password = '';
-    // myAdmin.confirmPassword = '';
+    // myAdmin.username = "bobsmith";
+    // myAdmin.password = 'Password#1234';
+    // myAdmin.confirmPassword = 'Password#1234';
 
     // myAdmin.save();
 
@@ -250,10 +250,10 @@ function main() {
     // UPDATE
     // =========================================================================
 
-    // // As if it was a form in a UI
-    // // ---------------------------
+    // As if it was a form in a UI
+    // ---------------------------
 
-    // const result = Admin.findById(1);
+    // const result = Admin.findById(4);
     // const myAdmin = (result as Admin);
 
     // /*  args needs to be a generic object to work as an associative array.
@@ -262,7 +262,7 @@ function main() {
     // const args = {
     //     firstName: myAdmin.firstName,
     //     lastName: myAdmin.lastName,
-    //     email: 'kevin@somewhere.com',
+    //     email: 'b@b.com',
     //     username: myAdmin.username,
     //     password: 'xyz',
     //     confirmPassword: ''
@@ -279,8 +279,8 @@ function main() {
     //     }
     // }
 
-    // // Updated directly from code
-    // // --------------------------
+    // Updated directly from code
+    // --------------------------
 
     // const result = Admin.findById(1);
     // const myAdmin = (result as Admin);
@@ -311,19 +311,20 @@ function main() {
     // As if it was a form in a UI
     // ---------------------------
 
-    const result = Admin.findByUsername('kskoglund');
-    if (result === false) {
-        $.writeln('Username not found!');
-    } else {
-        const admin = result as Admin;
-        const verificationResult = admin.verifyPassword('Password#1234');
+    // const result = Admin.findByUsername('kskoglund');
+    // if (result === false) {
+    //     $.writeln('Username not found!');
+    // } else {
+    //     const admin = result as Admin;
+    //     const verificationResult = admin.verifyPassword('Password#1234');
 
-        if (verificationResult) {
-            $.writeln('Passwords match!');
-        } else {
-            $.writeln("Passwords DON'T MATCH!!!");
-        }
-    }
+    //     if (verificationResult) {
+    //         $.writeln('Passwords match!');
+    //     } else {
+    //         $.writeln("Passwords DON'T MATCH!!!");
+    //     }
+    // }
+
 
 }
 

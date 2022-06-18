@@ -1,5 +1,5 @@
 /**
- * Modified 2022-06-09
+ * Modified 2022-06-18
  * @file		Entry point of the application. This is the file to be executed.
  * @author		Leonardo Pinheiro, UERJ <info@leonardopinheiro.net>
  * @copyright	Leonardo Pinheiro 2022
@@ -103,37 +103,37 @@ class Bicycle extends DatabaseObject {
         }
     }
 
-    public name() {
+    public name(): string {
         return `${this.brand} ${this.model} ${this.year}`;
     }
 
-    public get_weight_kg() {
+    public getWeightKg(): string {
         return `${numberFormat(this.weight_kg, 2)} kg`;
     }
 
-    public set_weight_kg(value) {
+    public setWeightKg(value): void {
         this.weight_kg = Number(
             (Math.round(this.weight_kg * 100) / 100).toFixed(value)
         );
     }
 
-    public weight_lbs() {
+    public weightLbs(): string {
         const weight_lbs = parseFloat(String(this.weight_kg)) * 2.2046226218;
         return `${numberFormat(weight_lbs, 2)} lbs`;
     }
 
-    public set_weight_lbs(value) {
+    public setWeightLbs(value): void {
         this.weight_kg = parseFloat(value) / 2.2046226218;
     }
 
-    public condition() {
+    public condition(): number | string {
         if (this.condition_id > 0) {
             return this.CONDITION_OPTIONS[this.condition_id];
         }
         return 'Unknown';
     }
 
-    protected validate() {
+    protected validate(): string[] {
         this.errors = [];
 
         if (!this.brand) {

@@ -1,6 +1,6 @@
 //DESCRIPTION: File (not module) with useful functions.
 /**
- * Modified 2022-06-11
+ * Modified 2022-06-18
  * @file		File (not module) with useful functions shared by <br />
  * 				other scripts in the application project.
  * @copyright	Leonardo Pinheiro 2021
@@ -36,8 +36,9 @@
 
 /**
  * Function to clear the ExtendScript Toolkit's console.
+ *
  */
-function clearConsole() {
+function clearConsole(): void {
     const estApp = BridgeTalk.getSpecifier('estoolkit');
     if (estApp) {
         const bt = new BridgeTalk();
@@ -53,26 +54,47 @@ function clearConsole() {
  *
  * @return {Connection} {Connection} A new instance of Connection.
  */
-function dbConnect() {
+function dbConnect(): Connection {
     /// @ts-ignore: Cannot find name 'connectionData'
     const connection = new Connection(connectionData);
     return connection;
 }
 
-function numberFormat(number, decimals, decPoint?, thousandsSep?) {
-    // Strip all characters but numerical ones.
-    number = `${number}`.replace(/[^0-9+\-Ee.]/g, '');
-    let n = !isFinite(+number) ? 0 : +number;
-    const prec = !isFinite(+decimals) ? 0 : Math.abs(decimals);
-    const sep = typeof thousandsSep === 'undefined' ? ',' : thousandsSep;
-    const dec = typeof decPoint === 'undefined' ? '.' : decPoint;
-    let s = [];
-    const toFixedFix = (n, prec) => {
-        const k = Math.pow(10, prec);
-        return '' + Math.round(n * k) / k;
-    };
-    // Fix for IE parseFloat(0.55).toFixed(0) = 0;
-    s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+/**
+ * Rounds the given number to a specified number of decimal places.
+ *
+ * @param {number} value    The number (to be converted to float if necessary)
+ *                          to be returned with decimal places (rounded).
+ * @param {number} decimalPlaces The number of decimal places desired.
+ * @return {number}  {number} The original number with decimal places (rounded).
+ * @see {@link https://stackoverflow.com/questions/6134039/format-number-to-always-show-2-decimal-places/34796988#34796988#answer-32178833 Format number to always show 2 decimal places}
+ */
+function roundNumber(value: number, decimalPlaces: number): number {
+    return Number(Math.round(parseFloat(value + 'e' + decimalPlaces)) + 'e-' + decimalPlaces);
+}
+
+/**
+ * Mimics the behaviour of PHP function number_format().
+ *
+ * @param {number} number The number to be formatted.
+ * @param {number} decimals The number of decimal places.
+ * @param {string} [dec_point='.'] The decimal separator. Defaults to &lsquo;.&rsquo;.
+ * @param {string} [thousands_sep=','] The thousands separator. Defaults to &lsquo;,&rsquo;.
+ * @return {string}  {string} The number as a formatted string.
+ * @see {@link https://stackoverflow.com/a/2901136 How to print a number with commas as thousands separators in JavaScript}
+ */
+function numberFormat(number: number, decimals: number, dec_point: string = '.', thousands_sep: string = ','): string {
+
+    var n = !isFinite(+number) ? 0 : +number,
+        prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+        sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+        dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+        toFixedFix = function (n, prec) {
+            // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+            var k = Math.pow(10, prec);
+            return Math.round(n * k) / k;
+        },
+        s = (prec ? toFixedFix(n, prec) : Math.round(n)).toString().split('.');
     if (s[0].length > 3) {
         s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
     }
@@ -99,8 +121,8 @@ function sendMessageToServer(
     port: number = 8124,
     encoding: string = 'UTF-8'
 ): string | null {
-    let reply = '';
-    let connection = new Socket();
+    let reply: string = '';
+    let connection: Socket = new Socket();
     connection.timeout = 600000;
 
     if (connection.open(`${host}:${port}`, encoding)) {

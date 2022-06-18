@@ -49,7 +49,7 @@ class Connection {
      * // MySQL answer (JSON) when deleting a record:
      * {"fieldCount":0,"affectedRows":1,"insertId":0,"serverStatus":2,"warningCount":0,"message":"","protocol41":true,"changedRows":0}
      */
-    public query(sql: string) {
+    public query(sql: string): false | object | object[] {
         this.connectionData.sql = sql;
 
         const mySQLResult: string = sendMessageToServer(

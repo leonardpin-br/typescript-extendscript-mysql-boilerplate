@@ -90,7 +90,7 @@ abstract class DatabaseObject {
      * @protected
      * @memberof DatabaseObject
      */
-    protected setInstanceProperties() {
+    protected setInstanceProperties(): void {
         /// @ts-ignore: Property 'database' does not exist on type 'Function'
         this.database = this.constructor.database;
 
@@ -108,20 +108,29 @@ abstract class DatabaseObject {
      * @param {string} sql The SQL string to be executed.
      * @return {object[]}   {object[]} Array containing objects from the query
      *                      result.
+     * @throws {Error}  If the query returns false or the returned value is not
+     *                  an array.
      * @memberof DatabaseObject
      */
     public static findBySql(sql: string): object[] {
         /*  If the query() is successful, it will be an array containing objects.
             Each object represents a row in the result set.
             Every key represents a column in the table (result set). */
+
+        const queryResult = this.database.query(sql);
+
+        if (queryResult === false) {
+            throw new Error('Database query failed.');
+        } else if (!(queryResult instanceof Array)) {
+            throw new Error(
+                'findBySql(): The expected result was an object[].'
+            );
+        }
+
         /**
          * @type {object[]}
          */
-        const result: object[] = this.database.query(sql);
-
-        if (!result) {
-            throw new Error('Database query failed.');
-        }
+        const result: object[] = queryResult as object[];
 
         // results into objects
         const objectArray: object[] = [];
@@ -238,7 +247,7 @@ abstract class DatabaseObject {
      * @memberof DatabaseObject
      * @see {@link Connection#query}
      */
-    protected create() {
+    protected create(): false | object | object[] {
         this.setInstanceProperties();
 
         this.validate();
@@ -305,6 +314,7 @@ abstract class DatabaseObject {
 
         const result = this.database.query(sql);
         if (result) {
+            /// @ts-ignore: Property 'id' does not exist on type 'DatabaseObject'
             this.id = this.database.insertId;
         }
 
@@ -316,12 +326,12 @@ abstract class DatabaseObject {
      * instance in memory.
      *
      * @protected
-     * @return {(false | object | object[])}    {(false | object | object[])} The
-     *                                          result of the query() method executed
-     *                                          inside this method.
+     * @return {(false | object)}    {(false | object)} The
+     *                               result of the query() method executed
+     *                               inside this method.
      * @memberof DatabaseObject
      */
-    protected update() {
+    protected update(): false | object {
         this.setInstanceProperties();
 
         this.validate();
@@ -338,14 +348,24 @@ abstract class DatabaseObject {
             attributePairs.push(`${key}='${attributes[key]}'`);
         });
 
+        /// @ts-ignore: Property 'tableName' does not exist on type 'Function'
         let sql: string = `UPDATE ${this.constructor.tableName} SET `;
 
         sql += attributePairs.join(', ');
 
+        /// @ts-ignore: Property 'id' does not exist on type 'DatabaseObject'
         sql += ` WHERE id='${this.database.escapeString(String(this.id))}' `;
         sql += 'LIMIT 1';
 
-        const result = this.database.query(sql);
+        const queryResult = this.database.query(sql);
+
+        if (queryResult === false) {
+            $.writeln('update(): The query returned false.');
+        } else if (queryResult instanceof Array) {
+            $.writeln('update(): The query returned and array. Should be one object only.');
+        }
+
+        const result = queryResult as object;
         return result;
     }
 
@@ -353,13 +373,15 @@ abstract class DatabaseObject {
      * Executes the update() or the create() instance methods based on the
      * presence of an ID.
      *
-     * @return {(DatabaseObject#update|DatabaseObject#create)} An instance method (update() or create()).
+     * @return {(false | object | object[])}    Returns the same as the instance
+     *                                          method that was executed.
      * @memberof DatabaseObject
      * @see {@link https://stackoverflow.com/questions/30012043/how-to-document-a-function-returned-by-a-function-using-jsdoc#answer-30393968 How to document a function returned by a function using JSDoc}
      * @see {@link https://stackoverflow.com/questions/23095975/jsdoc-object-methods-with-method-or-property#answer-59508384 JSDoc object methods with @method or @property?}
      */
-    public save() {
+    public save(): false | object | object[] {
         // A new record will not have an ID yet
+        /// @ts-ignore: Property 'id' does not exist on type 'DatabaseObject'
         if (this.id) {
             return this.update();
         }
@@ -408,7 +430,7 @@ abstract class DatabaseObject {
      *                              object in memory.
      * @memberof DatabaseObject
      */
-    public attributes() {
+    public attributes(): object {
         this.setInstanceProperties();
 
         const attributes = {};
@@ -432,10 +454,10 @@ abstract class DatabaseObject {
      * @return {object} {object} Object with the values escaped.
      * @memberof DatabaseObject
      */
-    protected sanitizedAttributes() {
+    protected sanitizedAttributes(): object {
         this.setInstanceProperties();
 
-        const attributes = this.attributes();
+        const attributes: object = this.attributes();
         const sanitized = {};
 
         /// @ts-ignore: Property 'keys' does not exist on type 'ObjectConstructor'
@@ -473,15 +495,23 @@ abstract class DatabaseObject {
      *                              False if there is no answer.
      * @memberof DatabaseObject
      */
-    public delete() {
+    public delete(): false | object {
         this.setInstanceProperties();
 
         /// @ts-ignore: Property 'tableName' does not exist on type 'Function'
         let sql = `DELETE FROM ${this.constructor.tableName} `;
+
+        /// @ts-ignore: Property 'id' does not exist on type 'DatabaseObject'
         sql += `WHERE id='${this.database.escapeString(String(this.id))}' `;
         sql += 'LIMIT 1';
 
-        const result = this.database.query(sql);
+        const queryResult: false | object | object[] = this.database.query(sql);
+
+        if (queryResult instanceof Array) {
+            $.writeln('delete(): The query returned an object[]. Should be false or one object only.');
+        }
+
+        const result: false | object = queryResult as false | object;
         return result;
     }
 }

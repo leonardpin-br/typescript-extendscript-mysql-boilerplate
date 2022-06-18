@@ -26,9 +26,11 @@
     },
     "scripts": {
         "watch:src": "tsc --watch",
+
         "build:doc": "jsdoc -c jsdoc.json",
         "watch:doc": "nodemon --ext js,jsdoc,jsx --watch dist --exec \"npm run build:doc\"",
         "server:doc": "live-server ./docs --no-css-inject --port=8282",
+
         "server:net": "node ./config/net-server.js",
         "debug:net": "npx ndb ./config/net-server.js"
     }
