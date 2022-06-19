@@ -27,7 +27,7 @@ only be a script, but a small application.
     3. An abstract class to be inherited by all the others that access
     the database. It is an application of the __active record__ design pattern.
     4. Two example subclasses are provided. One for a product and one for
-    a admin, both are subclasses of the database one (active record).
+    an admin, both are subclasses of the database one (active record).
     5. The code is heavly documented (JSDoc) and HTML generation is
     preconfigured.
     6. General and validation functions that can be easily reused in other
