@@ -20,13 +20,14 @@ This starter kit allows the development of a more powerfull tool. It will not
 only be a script, but a small application.
 
 ## It includes
-    1. Node.js (Net) server to act as a bridge between the client socket (like
-    Adobe InDesign, Adobe Brigde...) and the database server (MySQL).
+    1. Node.js (Net) socket server to act as a bridge between the client socket
+    (like Adobe InDesign, Adobe Brigde...) and the database server (MySQL).
     2. Easy password hashing and verification (bcrypt) through the same local
     server.
     3. An abstract class to be inherited by all the others that access
     the database. It is an application of the __active record__ design pattern.
-    4. Two example subclasses are provided.
+    4. Two example subclasses are provided. One for a product and one for
+    a admin, both are subclasses of the database one (active record).
     5. The code is heavly documented (JSDoc) and HTML generation is
     preconfigured.
     6. General and validation functions that can be easily reused in other
@@ -41,7 +42,7 @@ Having a MySQL database server is only necessary if you need communication with
 one. If your scripts do not access a database, you do not need it.
 
 If you use a Database Management System (DBMS) different from MySQL, editing the
-server will be easy.
+server to facilitate communication with it will be easy.
 
 
 ## Folder structure
@@ -53,8 +54,14 @@ Root
 |- resources    (.sql files)
 |- src          (source code to be compiled)
 
-
 ```
+
+## Which file will be executed?
+Using this starter kit, the index.jsx (\<projectRoot\>/dist/index.jsx) will be
+the file being executed from the Adobe application of your choice.
+
+Because of the limitations of ExtendScript, if you need to debug, you need to
+debug from it as well.
 
 ## Suggested VSCODE extensions
 [Task Explorer](https://marketplace.visualstudio.com/items?itemName=spmeesseman.vscode-taskexplorer)
