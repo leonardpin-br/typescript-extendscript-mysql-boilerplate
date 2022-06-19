@@ -4,12 +4,19 @@ This starter kit is preconfigured to facilitate fast development.
 
 > ### All the code is compiled to ExtendScript.
 
+## Inspirations and reference
+This starter project was created after I understood how the great extension
+[porky](https://github.com/Schreiber-und-Freunde/porky) was put together. I
+decided to create my own to start my personal projects.
+
 This kit is heavily influenced by the greate course
 [PHP: Object-Oriented Programming with Databases](https://www.linkedin.com/learning/php-object-oriented-programming-with-databases)
 taught by Kevin Skoglund. If you are learning about OOP, I highly recommend it
 even if PHP is not your primary focus.
 
 ## Why is it better than a script in a single file?
+This starter kit allows the development of a more powerfull tool. It will not
+only be a script, but a small application.
 
 ## It includes
     1. Node.js (Net) server to act as a bridge between the client socket (like
@@ -23,9 +30,14 @@ even if PHP is not your primary focus.
     preconfigured.
     6. General and validation functions that can be easily reused in other
     projects.
+    7. Polyfills already preconfigured.
 
 ## Dependencies
-It depends on Node.js. The package.json file is included.
+It depends on Node.js, but what runs in it are the socket server and the npm tasks.
+The generated code will run on Adobe applications.
+
+Having a MySQL database server is only necessary if you need communication with one.
+If your scripts do not access a database, you do not need it.
 
 ## Folder structure
 ```
