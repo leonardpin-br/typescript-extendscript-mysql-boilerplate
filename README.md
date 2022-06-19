@@ -2,7 +2,7 @@
 
 This starter kit is preconfigured to facilitate fast development.
 
-This kit is heavly influenced by the greate course
+This kit is heavily influenced by the greate course
 [PHP: Object-Oriented Programming with Databases](https://www.linkedin.com/learning/php-object-oriented-programming-with-databases)
 taught by Kevin Skoglund. If you are learning about OOP, I highly recommend it
 even if PHP is not your primary focus.
@@ -10,9 +10,10 @@ even if PHP is not your primary focus.
 ## It includes
     1. Node.js (Net) server to act as a bridge between the client socket (like
     Adobe InDesign, Adobe Brigde...) and the database server (MySQL).
-    2. Easy password hashing and verification (bcrypt) through the same server.
+    2. Easy password hashing and verification (bcrypt) through the same local
+    server.
     3. An abstract class to be inherited by all the others that access
-    the database. It is an application of the __active record__ design pattern.
+    the database. It is an application of the **active record** design pattern.
     4. Two example subclasses are provided.
     5. The code is heavly documented (JSDoc) and HTML generation is
     preconfigured.
