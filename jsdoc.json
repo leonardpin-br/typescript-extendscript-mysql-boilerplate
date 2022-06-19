@@ -1,7 +1,8 @@
 {
     "source": {
         "include": [
-            "dist"
+            "dist",
+            "config/net-server.js"
         ],
         "exclude": [
             "node_modules"
