@@ -6,7 +6,7 @@ This starter kit is preconfigured to facilitate fast development.
 
 ## Inspirations and reference
 This starter project was created after I understood (at least in basic terms)
-how the great extension [porky](https://github.com/Schreiber-und-Freunde/porky)
+how the very good extension [porky](https://github.com/Schreiber-und-Freunde/porky)
 was put together. I decided to create my own (smaller) to start my
 personal projects.
 
@@ -34,11 +34,15 @@ only be a script, but a small application.
     7. Polyfills already preconfigured.
 
 ## Dependencies
-It depends on Node.js, but what runs in it are the socket server and the npm tasks.
-The generated code will run on Adobe applications.
+It depends on Node.js, but what runs in it are the socket server and the npm
+tasks. The generated code will run on Adobe applications.
 
-Having a MySQL database server is only necessary if you need communication with one.
-If your scripts do not access a database, you do not need it.
+Having a MySQL database server is only necessary if you need communication with
+one. If your scripts do not access a database, you do not need it.
+
+If you use a Database Management System (DBMS) different from MySQL, editing the
+server will be easy.
+
 
 ## Folder structure
 ```
