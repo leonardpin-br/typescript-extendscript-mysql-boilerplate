@@ -5,9 +5,10 @@ This starter kit is preconfigured to facilitate fast development.
 > ### All the code is compiled to ExtendScript.
 
 ## Inspirations and reference
-This starter project was created after I understood how the great extension
-[porky](https://github.com/Schreiber-und-Freunde/porky) was put together. I
-decided to create my own to start my personal projects.
+This starter project was created after I understood (at least in basic terms)
+how the great extension [porky](https://github.com/Schreiber-und-Freunde/porky)
+was put together. I decided to create my own (smaller) to start my
+personal projects.
 
 This kit is heavily influenced by the greate course
 [PHP: Object-Oriented Programming with Databases](https://www.linkedin.com/learning/php-object-oriented-programming-with-databases)
