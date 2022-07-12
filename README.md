@@ -16,8 +16,7 @@ taught by Kevin Skoglund. If you are learning about OOP, I highly recommend it
 even if PHP is not your primary focus.
 
 ## Why is it better than a script in a single file?
-This starter kit allows the development of a more powerfull tool. It will not
-only be a script, but a small application.
+This starter kit allows the development of a more powerfull tool. Instead of creating a single script, the user of this kit will be able to create a small application.
 
 ## It includes
     1. Node.js (Net) socket server to act as a bridge between the client socket
@@ -43,7 +42,6 @@ one. If your scripts do not access a database, you do not need it.
 
 If you use a Database Management System (DBMS) different from MySQL, editing the
 server to facilitate communication with it will be easy.
-
 
 ## Folder structure
 ```
