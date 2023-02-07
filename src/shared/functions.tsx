@@ -4,7 +4,7 @@
  * @file		File (not module) with useful functions shared by <br />
  * 				other scripts in the application project.
  * @copyright	Leonardo Pinheiro 2021
- * @author		Leonardo Pinheiro, UERJ <info@leonardopinheiro.net>
+ * @author		Leonardo Pinheiro <info@leonardopinheiro.net>
  * @see			<a href="https://www.leonardopinheiro.net" target=_blank>Leonardo Pinheiro Designer</a>
  * @see			{@link https://www.alanwsmith.com/clearing-extendscript-toolkit-console Clearing the Adobe ExtendScript ToolKit Console Window}
  * @see			{@link https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/String/Trim#polyfill Polyfill}

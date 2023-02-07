@@ -3,7 +3,7 @@
  * @file		Node.js (Net) socket server to act as a bridge between the client (Adobe
  *              application like InDesign, Bridge, After Effects...) and the database server.<br />
  *              This server also hashes and verifies passwords (bcrypt).
- * @author		Leonardo Pinheiro, UERJ <info@leonardopinheiro.net>
+ * @author		Leonardo Pinheiro <info@leonardopinheiro.net>
  * @copyright	Leonardo Pinheiro 2022
  * @see			<a href="https://www.leonardopinheiro.net" target=_blank>Leonardo Pinheiro Designer</a>
  * @see		{@link https://nodejs.org/api/net.html Node.js v17.2.0 documentation}
