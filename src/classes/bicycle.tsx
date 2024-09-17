@@ -1,7 +1,7 @@
 /**
  * Modified 2022-06-18
  * @file		Entry point of the application. This is the file to be executed.
- * @author		Leonardo Pinheiro, UERJ <info@leonardopinheiro.net>
+ * @author		Leonardo Pinheiro <info@leonardopinheiro.net>
  * @copyright	Leonardo Pinheiro 2022
  * @see			<a href="https://www.leonardopinheiro.net" target=_blank>Leonardo Pinheiro Designer</a>
  *
